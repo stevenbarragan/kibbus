@@ -1,25 +1,22 @@
-
-
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
-
-#container {
-	background-color: red;
-	margin: 0 auto;
+footer{
+    margin: 0 auto;
+    width: 300px;
+    text-align: center;
 }
+#container {
+    background-color: red;
+    margin: 0 auto;
+    height: 480px;
+    width: 98%;
+}
+#plot,#controls{
+    float: left;
+    height: 480px;
+}
+#plot{
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
+#controls{
+    width: 200px;	
+    background-color: orange;
+}
