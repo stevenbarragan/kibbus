@@ -4,19 +4,21 @@ footer{
     text-align: center;
 }
 #container {
-    background-color: red;
     margin: 0 auto;
-    height: 480px;
+    min-height: 500px;
+    height: 100%;
     width: 98%;
 }
-#plot,#controls{
-    float: left;
-    height: 480px;
-}
 #plot{
-
+    height: 500px;
+    float: left;
 }
 #controls{
-    width: 200px;	
-    background-color: orange;
+    width: 180px;	
+    background-color: #F5F5F5;
+    text-align: center;
+    padding: 10px;
+    height: 100px;
+    float: right;
+    height: 480px;
 }
