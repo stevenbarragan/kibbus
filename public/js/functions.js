@@ -5,6 +5,14 @@ var plot = {
     height : 500,
     grid : false,
     grid_up : false,
+    obstacles : {},
+    obstacles_set : false,
+    forest:["fire.svg" , "flor.svg" , "flower.svg" , "flowers.png" , "river2.svg" , "river3.svg" , "rock.svg" , "tree.png", "tree.svg" , "tree2.svg" , "tree3.jpg" , "tree4.jpg" , "tree5.svg" , "tree6.svg" , "tree7.svg" , "tree8.svg", "tree9.svg" , "tree10.svg" , "tree11.svg" , "tree12.svg" ,"tree13.svg"],
+    init: function(){
+        this.set_size()
+        this.set_grid()
+        this.obstacles_set = paper.set()
+    },
     set_size : function(){
         
         var container = $("#container")
@@ -44,13 +52,9 @@ var plot = {
         }
     },
     random : function(paper, times ){
+        this.obstacles = {}
     
-        obstacles_set = paper.set()
-        obstacles = {}
-    
-        var forest = ["fire.svg" , "flor.svg" , "flower.svg" , "flowers.png" , "river2.svg" , "river3.svg" , "rock.svg" , "tree.png", "tree.svg" , "tree2.svg" , "tree3.jpg" , "tree4.jpg" , "tree5.svg" , "tree6.svg" , "tree7.svg" , "tree8.svg", "tree9.svg" , "tree10.svg" , "tree11.svg" , "tree12.svg" ,"tree13.svg"]
-    
-        obstacles_set.remove()
+        this.obstacles_set.remove()
         
         width = this.width / 50
         height = this.height / 50
@@ -58,26 +62,23 @@ var plot = {
         console.log(height)
         
         for (i=0; i<height; i++){
-            obstacles[i] = new Array()
+            this.obstacles[i] = new Array()
         }
     
-        console.log(forest.length)
         for (i=0; i< times ; i++){
             do{
 
                 x = Math.floor((Math.random() * width ) )
                 y = Math.floor((Math.random() * height ) ) 
 
-            }while( obstacles[y].indexOf(x) != -1 )
+            }while( this.obstacles[y].indexOf(x) != -1 )
 
-            obstacles[y] = obstacles[y].concat(x)
+            this.obstacles[y] = this.obstacles[y].concat(x)
         
-            img_index = Math.floor((Math.random() * ( forest.length )) )
+            img_index = Math.floor((Math.random() * ( this.forest.length )) )
 
-            obstacles_set.push( paper.image("img/forest/" + forest[img_index], x * 50, y * 50, 50, 50) )
+            this.obstacles_set.push( paper.image("img/forest/" + this.forest[img_index], x * 50, y * 50, 50, 50) )
         }
-        
-        console.log( obstacles )
     },
     set_house: function(x, y){
         if(!this.house){
@@ -113,5 +114,10 @@ var plot = {
                 }, 10 , "elasctic")
             }
         })
+    },
+    is_obstacle: function(x,y){
+        if( this.obstacles[y].indexOf(x) != -1 )
+            return true
+        return false
     }
 }

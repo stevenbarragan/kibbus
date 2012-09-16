@@ -37,54 +37,60 @@ kibbus = {
         })
     },
     move : function(where){
+        var x = this.x
+        var y = this.y
         if(!this.spining){
             angle = this.angle
             switch(where){
                 case UP:
-                    this.y--
+                    y = this.y - 1
                     angle = 180
                     break;
                 case DOWN:
-                    this.y++
+                    y = this.y + 1
                     angle = 0
                     break;
                 case LEFT:
-                    this.x--
+                    x = this.x - 1
                     angle = 90
                     break;
                 case RIGTH:
-                    this.x++
+                    x = this.x + 1
                     angle = -90
                     break;
                 case UpLEFTH:
-                    this.x--
-                    this.y--
+                    x = this.x - 1
+                    y = this.y - 1
                     angle = 135
                     break;
                 case UpRIGTH:
-                    this.x++
-                    this.y--
+                    x = this.x + 1
+                    y = this.y - 1
                     angle = 215
                     break;
                 case DownLEFT:
-                    this.x--
-                    this.y++
+                    x = this.x - 1
+                    y = this.y + 1
                     angle = 45
                     break;
                 case DownRIGTH:
-                    this.x++
-                    this.y++
+                    x = this.x + 1
+                    y = this.y + 1
                     angle = -45
                     break;
             }
-            if( angle != this.angle){
-                this.angle = angle
-                this.spin()
-                setTimeout(function(){
-                    kibbus.translate()
-                } , 250 )
-            }else{
-                this.translate()
+            if( !plot.is_obstacle(x, y)){
+                this.x = x
+                this.y = y
+                if( angle != this.angle){
+                    this.angle = angle
+                    this.spin()
+                    setTimeout(function(){
+                        kibbus.translate()
+                    } , 250 )
+                }else{
+                    this.translate()
+                }
             }
         }
     }
