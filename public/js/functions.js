@@ -45,19 +45,39 @@ var plot = {
     },
     random : function(paper, times ){
     
-        obstacles = paper.set()
+        obstacles_set = paper.set()
+        obstacles = {}
     
         var forest = ["fire.svg" , "flor.svg" , "flower.svg" , "flowers.png" , "river2.svg" , "river3.svg" , "rock.svg" , "tree.png", "tree.svg" , "tree2.svg" , "tree3.jpg" , "tree4.jpg" , "tree5.svg" , "tree6.svg" , "tree7.svg" , "tree8.svg", "tree9.svg" , "tree10.svg" , "tree11.svg" , "tree12.svg" ,"tree13.svg"]
     
-        obstacles.remove()
-    
-        for (i=0; i<times; i++){
-            x = Math.floor((Math.random() * width ) )
-            y = Math.floor((Math.random() * width ) )
-            img_index = Math.floor((Math.random() * forest.length ) )
+        obstacles_set.remove()
         
-            obstacles.push( paper.image("img/forest/" + forest[img_index], x * 50, y * 50, 50, 50) )
+        width = this.width / 50
+        height = this.height / 50
+        
+        console.log(height)
+        
+        for (i=0; i<height; i++){
+            obstacles[i] = new Array()
         }
+    
+        console.log(forest.length)
+        for (i=0; i< times ; i++){
+            do{
+
+                x = Math.floor((Math.random() * width ) )
+                y = Math.floor((Math.random() * height ) ) 
+
+            }while( obstacles[y].indexOf(x) != -1 )
+
+            obstacles[y] = obstacles[y].concat(x)
+        
+            img_index = Math.floor((Math.random() * ( forest.length )) )
+
+            obstacles_set.push( paper.image("img/forest/" + forest[img_index], x * 50, y * 50, 50, 50) )
+        }
+        
+        console.log( obstacles )
     },
     set_house: function(x, y){
         if(!this.house){

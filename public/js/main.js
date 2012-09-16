@@ -11,7 +11,7 @@ $(document).ready(function(){
     plot.set_grid()
     
     $("#random").click(function(){
-        plot.random(paper, 150 )
+        plot.random(paper, 75 )
     })
     
     $("#set_grid").click(function(){
