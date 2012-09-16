@@ -12,69 +12,79 @@ $(document).ready(function(){
     kibbus = {
         state : 6,
         moving: false,
+        spining: false,
         angle : 0,
+        cow : false,
         x:2,
         y:2,
-        rotate : function( angle ){
+        spin: function(){
+            this.spining = true
             this.cow.animate({
-                transform: "r" + angle,
-                x : this.x,
-                y : this.y
-            }, 1000, "elastic");
+                transform: "r" + this.angle
+            }, 100, ">" , function(){
+                kibbus.spining = false
+            });
         },
-        translate: function( x , y){
-            this.x = x
-            this.y = y
+        translate: function(){
+            this.moving = true
             this.cow.animate({
-                x : x * 50,
-                y : y * 50,
+                x : this.x * 50,
+                y : this.y * 50,
                 transform: "r" + this.angle
             }, 500 , "<>", function(){
                 kibbus.moving = false
             })
         },
         move : function(where){
-            if(!this.moving || true){
-                this.moving = true
+            if(!this.spining){
+                angle = this.angle
                 switch(where){
                     case UP:
                         this.y--
-                        this.angle = 180
+                        angle = 180
                         break;
                     case DOWN:
                         this.y++
-                        this.angle = 0
+                        angle = 0
                         break;
                     case LEFT:
                         this.x--
-                        this.angle = 90
+                        angle = 90
                         break;
                     case RIGTH:
                         this.x++
-                        this.angle = -90
+                        angle = -90
                         break;
                     case UpLEFTH:
                         this.x--
                         this.y--
-                        this.angle = 135
+                        angle = 135
                         break;
                     case UpRIGTH:
                         this.x++
                         this.y--
-                        this.angle = 215
+                        angle = 215
                         break;
                     case DownLEFT:
                         this.x--
                         this.y++
-                        this.angle = 45
+                        angle = 45
                         break;
                     case DownRIGTH:
                         this.x++
                         this.y++
-                        this.angle = -45
+                        angle = -45
                         break;
-                }   
-                this.translate(this.x, this.y)
+                }
+                if( angle != this.angle){
+                    this.angle = angle
+                    this.spin()
+                    setTimeout(function(){
+                        kibbus.translate()
+                    } , 250 )
+                }else{
+                    this.translate()
+                }
             }
         }
     }
