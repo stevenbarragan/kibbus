@@ -15,6 +15,9 @@ kibbus = {
     cow : false,
     x:2,
     y:2,
+    init : function(){
+        
+    },
     spin: function(){
         this.spining = true
         this.cow.animate({

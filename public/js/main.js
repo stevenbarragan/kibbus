@@ -8,8 +8,7 @@ var forest = ["fire.svg" , "flor.svg" , "flower.svg" , "flowers.png" , "river2.s
 $(document).ready(function(){
     
     plot.set_size()
-    
-    kibbus.cow = paper.image( "img/cow.svg" , 100 , 100 , 50 , 50 )
+    plot.set_grid()
     
     $("#random").click(function(){
         plot.random(paper, 150 )
@@ -18,8 +17,14 @@ $(document).ready(function(){
     $("#set_grid").click(function(){
         plot.set_grid()
     })
+    
+    $("#house").click(function(){
+        plot.set_house()
+    })
 })
 
 $(document).keydown(function(key){
-    kibbus.move(key.keyCode)
+    if(kibbus.cow){
+        kibbus.move(key.keyCode)
+    }
 })

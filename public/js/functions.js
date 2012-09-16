@@ -1,4 +1,6 @@
 var plot = {
+    canvas : false,
+    house : false,
     width : 0,
     height : 500,
     grid : false,
@@ -6,7 +8,7 @@ var plot = {
     set_size : function(){
         
         var container = $("#container")
-        plot_div = $("#plot").width(function(){
+        this.canvas = $("#plot").width(function(){
             plot.width = container.width() - 220
             plot.width = plot.width - ( plot.width % 50 )
             return plot.width
@@ -16,7 +18,7 @@ var plot = {
             return container.width() - plot.width - 21
         })
     
-        paper = new Raphael(document.getElementById('plot'), plot_div.width() , plot_div.height() );
+        paper = new Raphael(document.getElementById('plot'), this.canvas.width() , this.canvas.height() );
     },
     set_grid : function(){
         if( !this.grid ){
@@ -56,5 +58,40 @@ var plot = {
         
             obstacles.push( paper.image("img/forest/" + forest[img_index], x * 50, y * 50, 50, 50) )
         }
+    },
+    set_house: function(x, y){
+        if(!this.house){
+            this.house = paper.image( "img/cow.svg" , -50 , - 50, 50 , 50 )
+        }
+        
+        this.canvas.mousemove(function(position){
+            
+            x = position.pageX - ( position.pageX % 50 )
+            y = position.pageY - ( position.pageY % 50 )
+            
+            plot.house.animate({
+                x : x,
+                y : y - 50
+            }, 15 , "<>")
+        })
+        
+        this.canvas.click(function(param){
+            plot.canvas.unbind("mousemove")
+            plot.canvas.unbind("click")
+            
+            kibbus.x = Math.floor( param.pageX / 50  )
+            kibbus.y = Math.floor( (param.pageY - 50) / 50 )
+            
+            if( !kibbus.cow ){
+                kibbus.cow = this.house = paper.image( "img/cow.svg" , kibbus.x * 50 , kibbus.y * 50, 50 , 50 )   
+            }else{
+                console.log("changing de house")
+                kibbus.init()
+                kibbus.cow.animate({
+                    x : kibbus.x *50, 
+                    y : kibbus.y * 50
+                }, 10 , "elasctic")
+            }
+        })
     }
 }
