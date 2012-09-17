@@ -22,3 +22,6 @@ footer{
     float: right;
     height: 480px;
 }
+.btn{
+    margin: 10px;
+}

@@ -59,8 +59,6 @@ var plot = {
         width = this.width / 50
         height = this.height / 50
         
-        console.log(height)
-        
         for (i=0; i<height; i++){
             this.obstacles[i] = new Array()
         }
@@ -106,18 +104,41 @@ var plot = {
             if( !kibbus.cow ){
                 kibbus.cow = this.house = paper.image( "img/cow.svg" , kibbus.x * 50 , kibbus.y * 50, 50 , 50 )   
             }else{
-                console.log("changing de house")
-                kibbus.init()
+                
                 kibbus.cow.animate({
                     x : kibbus.x *50, 
-                    y : kibbus.y * 50
+                    y : kibbus.y *50
                 }, 10 , "elasctic")
             }
+            
+            kibbus.init()
         })
     },
     is_obstacle: function(x,y){
         if( this.obstacles[y].indexOf(x) != -1 )
             return true
         return false
+    },
+    invert_angle:function(angle){
+        switch(angle){
+            case 180:
+                return 0
+            case 0:
+                return 180
+            case 90:
+                return -90
+            case -90:
+                return 90
+            case 135:
+                return -45
+            case 215:
+                return 45
+            case 45:
+                return -135
+            case -45:
+                return 135
+            default:
+                return -angle
+        }
     }
 }

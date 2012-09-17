@@ -19,6 +19,9 @@ $(document).ready(function(){
     $("#house").click(function(){
         plot.set_house()
     })
+    $("#back").click(function(){
+        kibbus.come_back()
+    })
 })
 
 $(document).keydown(function(key){

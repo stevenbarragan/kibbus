@@ -15,8 +15,15 @@ kibbus = {
     cow : false,
     x:2,
     y:2,
+    memory:[],
     init : function(){
+        this.memory = []
         
+        this.memory.push({
+            x : this.x * 50 ,
+            y : this.y * 50,
+            transform: "r0"
+        })
     },
     spin: function(){
         this.spining = true
@@ -25,15 +32,23 @@ kibbus = {
         }, 100, ">" , function(){
             kibbus.spining = false
         });
+        
     },
     translate: function(){
         this.moving = true
+        
         this.cow.animate({
             x : this.x * 50,
             y : this.y * 50,
             transform: "r" + this.angle
         }, 500 , "<>", function(){
             kibbus.moving = false
+        })
+        
+        this.memory.push({
+            x : this.x * 50,
+            y : this.y* 50,
+            transform: "r" + plot.invert_angle(kibbus.angle)
         })
     },
     move : function(where){
@@ -93,5 +108,25 @@ kibbus = {
                 }
             }
         }
+    },
+    come_back:function(){
+        if( this.memory.length > 0){
+            this.transform()
+        }else{
+            this.init()
+        }
+    },
+    transform: function(){
+        var tx = kibbus.memory.pop()
+        console.log(tx)
+        this.x = tx.x / 50
+        this.y = tx.y / 50
+        this.cow.animate(tx, 250 , "<>", function(){
+            
+            })
+        
+        setTimeout( function(){
+            kibbus.come_back()
+        }, 200 )
     }
 }
