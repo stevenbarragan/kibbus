@@ -12,6 +12,7 @@ var plot = {
         this.set_size()
         this.set_grid()
         this.obstacles_set = paper.set()
+        this.random(80)
     },
     set_size : function(){
         
@@ -38,20 +39,26 @@ var plot = {
                 patron = "M 0 " + i + " l " + this.width + " 0"
                 this.grid.push( paper.path(patron) )
             }
-        }
-        if(this.grid_up){
             this.grid.attr({
                 opacity: 0
             })
+        }
+        if(this.grid_up){
+            
+            this.grid.animate({
+                opacity: 0
+            }, 400 , "<>")
+            
             this.grid_up = false
         }else{
-            this.grid.attr({
-                opacity: 0.3
-            })
+            this.grid.animate({
+                opacity: 0.4
+            }, 400 , "<>")
+            
             this.grid_up = true
         }
     },
-    random : function(paper, times ){
+    random : function(times){
         this.obstacles = {}
     
         this.obstacles_set.remove()
@@ -77,10 +84,20 @@ var plot = {
 
             this.obstacles_set.push( paper.image("img/forest/" + this.forest[img_index], x * 50, y * 50, 50, 50) )
         }
+        
+        this.obstacles_set.attr({
+            opacity:0
+        })
+        
+        setTimeout(function(){
+            plot.obstacles_set.animate({
+                opacity:1
+            }, 500 , ">") , 100
+        })
     },
     set_house: function(x, y){
         if(!this.house){
-            this.house = paper.image( "img/cow.svg" , -50 , - 50, 50 , 50 )
+            this.house = paper.image( "img/house.svg" , -50 , - 50, 50 , 50 )
         }
         
         this.canvas.mousemove(function(position){
@@ -112,33 +129,12 @@ var plot = {
             }
             
             kibbus.init()
+            plot.house.toFront()
         })
     },
     is_obstacle: function(x,y){
         if( this.obstacles[y].indexOf(x) != -1 )
             return true
         return false
-    },
-    invert_angle:function(angle){
-        switch(angle){
-            case 180:
-                return 0
-            case 0:
-                return 180
-            case 90:
-                return -90
-            case -90:
-                return 90
-            case 135:
-                return -45
-            case 215:
-                return 45
-            case 45:
-                return -135
-            case -45:
-                return 135
-            default:
-                return -angle
-        }
     }
 }

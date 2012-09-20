@@ -9,7 +9,7 @@ $(document).ready(function(){
     plot.init()
     
     $("#random").click(function(){
-        plot.random(paper, 75 )
+        plot.random(75)
     })
     
     $("#set_grid").click(function(){

@@ -17,6 +17,18 @@ kibbus = {
     y:2,
     memory:[],
     init : function(){
+        
+        if( !kibbus.cow ){
+            kibbus.cow = this.house = paper.image( "img/cow.svg" , kibbus.x * 50 , kibbus.y * 50, 50 , 50 )   
+        }else{
+                
+            kibbus.cow.animate({
+                x : kibbus.x *50, 
+                y : kibbus.y *50,
+                opacity:0
+            }, 10 , "elasctic")
+        }
+        
         this.memory = []
         
         this.memory.push({
@@ -28,7 +40,8 @@ kibbus = {
     spin: function(){
         this.spining = true
         this.cow.animate({
-            transform: "r" + this.angle
+            transform: "r" + this.angle,
+            opacity : 1
         }, 100, ">" , function(){
             kibbus.spining = false
         });
@@ -40,7 +53,8 @@ kibbus = {
         this.cow.animate({
             x : this.x * 50,
             y : this.y * 50,
-            transform: "r" + this.angle
+            transform: "r" + this.angle,
+            opacity : 1
         }, 500 , "<>", function(){
             kibbus.moving = false
         })
@@ -48,7 +62,7 @@ kibbus = {
         this.memory.push({
             x : this.x * 50,
             y : this.y* 50,
-            transform: "r" + plot.invert_angle(kibbus.angle)
+            transform: "r" + utils.invert_angle(kibbus.angle)
         })
     },
     move : function(where){
@@ -121,7 +135,7 @@ kibbus = {
         console.log(tx)
         this.x = tx.x / 50
         this.y = tx.y / 50
-        this.cow.animate(tx, 250 , "<>", function(){
+        this.cow.animate(tx, 300 , "<>", function(){
             
             })
         
