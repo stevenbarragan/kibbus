@@ -9,6 +9,7 @@ var DownRIGTH = 67
 var DownLEFT = 90
     
 kibbus = {
+    images : ["cow.svg" , "green-cow.svg" , "blue-cow.svg", "mouse.svg" , "elephant.svg"],
     moving: false,
     spining: false,
     angle : 0,
@@ -18,16 +19,19 @@ kibbus = {
     memory:[],
     init : function(){
         
+        var img = this.images[Math.floor( Math.random() * this.images.length )]
+        
         if( !kibbus.cow ){
-            kibbus.cow = this.house = paper.image( "img/cow.svg" , kibbus.x * 50 , kibbus.y * 50, 50 , 50 )   
-        }else{
-                
-            kibbus.cow.animate({
-                x : kibbus.x *50, 
-                y : kibbus.y *50,
-                opacity:0
-            }, 10 , "elasctic")
+            kibbus.cow = paper.image( "img/" + img , kibbus.x * 50 , kibbus.y * 50, 50 , 50 )   
         }
+                
+        kibbus.cow.attr({
+            src: "img/" + img
+        }).animate({
+            x : kibbus.x *50, 
+            y : kibbus.y *50,
+            opacity:0
+        }, 10 , "elasctic")
         
         this.memory = []
         
@@ -132,15 +136,12 @@ kibbus = {
     },
     transform: function(){
         var tx = kibbus.memory.pop()
-        console.log(tx)
         this.x = tx.x / 50
         this.y = tx.y / 50
-        this.cow.animate(tx, 300 , "<>", function(){
-            
-            })
+        this.cow.animate(tx, 350 , "<>")
         
         setTimeout( function(){
             kibbus.come_back()
-        }, 200 )
+        }, 250 )
     }
 }

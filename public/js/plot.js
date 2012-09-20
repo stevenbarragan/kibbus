@@ -7,24 +7,35 @@ var plot = {
     grid_up : false,
     obstacles : {},
     obstacles_set : false,
-    forest:["fire.svg" , "flor.svg" , "flower.svg" , "flowers.png" , "river2.svg" , "river3.svg" , "rock.svg" , "tree.png", "tree.svg" , "tree2.svg" , "tree3.jpg" , "tree4.jpg" , "tree5.svg" , "tree6.svg" , "tree7.svg" , "tree8.svg", "tree9.svg" , "tree10.svg" , "tree11.svg" , "tree12.svg" ,"tree13.svg"],
+    forest:["fire.svg" , "flor.svg" , "flower.svg" , "flowers.png" , "river2.svg" , "river3.svg" , "rock.svg" , "tree.png", "tree.svg" , "tree2.svg" , "tree3.jpg" , "tree4.jpg" , "tree5.svg" , "tree6.svg" , "tree8.svg", "tree9.svg" , "tree10.svg" , "tree11.svg" , "tree12.svg" ,"tree13.svg" , "flor2.svg" , "tree7.svg"],
     init: function(){
         this.set_size()
-        this.set_grid()
         this.obstacles_set = paper.set()
-        this.random(80)
+        this.random(50)
     },
     set_size : function(){
         
         var container = $("#container")
+        var controls = $("#controls")
+        
+        container.height(function(){
+            plot.height = $(window).height() - $('footer').height() - $('header').height() - 10
+            plot.height = plot.height - ( plot.height % 50 )
+            if ( plot.height < 500 )
+                return 500
+            return plot.height
+        })
+        
         this.canvas = $("#plot").width(function(){
-            plot.width = container.width() - 220
+            plot.width = container.width() - controls.outerWidth()
             plot.width = plot.width - ( plot.width % 50 )
+            if( plot.width < 580)
+                return 580
             return plot.width
         })
     
-        $("#controls").width(function(){
-            return container.width() - plot.width - 21
+        controls.outerWidth(function(){
+            return container.width() - plot.width
         })
     
         paper = new Raphael(document.getElementById('plot'), this.canvas.width() , this.canvas.height() );
@@ -58,13 +69,15 @@ var plot = {
             this.grid_up = true
         }
     },
-    random : function(times){
-        this.obstacles = {}
-    
-        this.obstacles_set.remove()
+    random : function(percent){
         
         width = this.width / 50
         height = this.height / 50
+        
+        times = percent * height * width / 100
+        
+        this.obstacles = {}
+        this.obstacles_set.remove()
         
         for (i=0; i<height; i++){
             this.obstacles[i] = new Array()
@@ -82,12 +95,11 @@ var plot = {
         
             img_index = Math.floor((Math.random() * ( this.forest.length )) )
 
-            this.obstacles_set.push( paper.image("img/forest/" + this.forest[img_index], x * 50, y * 50, 50, 50) )
+            this.obstacles_set.push( paper.image("img/forest/" + this.forest[img_index], x * 50, y * 50, 50, 50)
+                .attr({
+                    opacity:0
+                }))
         }
-        
-        this.obstacles_set.attr({
-            opacity:0
-        })
         
         setTimeout(function(){
             plot.obstacles_set.animate({
@@ -96,19 +108,22 @@ var plot = {
         })
     },
     set_house: function(x, y){
-        if(!this.house){
-            this.house = paper.image( "img/house.svg" , -50 , - 50, 50 , 50 )
-        }
-        
         this.canvas.mousemove(function(position){
             
             x = position.pageX - ( position.pageX % 50 )
-            y = position.pageY - ( position.pageY % 50 )
+            y = position.pageY - ( position.pageY % 50 ) - 50
             
-            plot.house.animate({
-                x : x,
-                y : y - 50
-            }, 15 , "<>")
+            if( !plot.is_obstacle(x / 50, y / 50)){
+                
+                if(!plot.house){
+                    plot.house = paper.image( "img/house.svg" , x , y, 50 , 50 )
+                }
+                
+                plot.house.animate({
+                    x : x,
+                    y : y
+                }, 20 , "<>")
+            }
         })
         
         this.canvas.click(function(param){
@@ -117,16 +132,6 @@ var plot = {
             
             kibbus.x = Math.floor( param.pageX / 50  )
             kibbus.y = Math.floor( (param.pageY - 50) / 50 )
-            
-            if( !kibbus.cow ){
-                kibbus.cow = this.house = paper.image( "img/cow.svg" , kibbus.x * 50 , kibbus.y * 50, 50 , 50 )   
-            }else{
-                
-                kibbus.cow.animate({
-                    x : kibbus.x *50, 
-                    y : kibbus.y *50
-                }, 10 , "elasctic")
-            }
             
             kibbus.init()
             plot.house.toFront()

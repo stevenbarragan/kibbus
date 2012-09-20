@@ -3,28 +3,32 @@ body {
     padding-bottom: 10px;
 }
 footer{
-    margin: 0 auto;
-    width: 300px;
-    text-align: center;
+    bottom:0;
+    margin:0 auto;
+    padding:5px;
+    position:fixed;
+    text-align:center;
+    width:100%;
 }
 #container {
     margin: 0 auto;
     min-height: 500px;
     height: 100%;
     width: 98%;
+    min-width: 580px;
 }
 #plot{
-    height: 500px;
     float: left;
+    height: inherit;
 }
 #controls{
-    width: 180px;	
+    width: 130px;	
     background-color: #F5F5F5;
     text-align: center;
     padding: 10px;
     height: 100px;
     float: right;
-    height: 480px;
+    height: inherit;
 }
 .btn{
     margin: 10px;
