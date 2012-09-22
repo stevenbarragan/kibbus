@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="New document 1"
-   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="river2.svg"
+   inkscape:version="0.48.1 r9760"
    version="1.1"
    id="svg2"
-   height="531.49603"
-   width="531.49603">
+   height="50"
+   width="50">
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -22,17 +22,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.1321709"
-     inkscape:cx="142.60351"
-     inkscape:cy="264.14305"
+     inkscape:zoom="4.5286838"
+     inkscape:cx="73.446953"
+     inkscape:cy="25.248486"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     units="cm"
-     inkscape:window-width="1680"
-     inkscape:window-height="1003"
-     inkscape:window-x="-4"
-     inkscape:window-y="-4"
+     units="px"
+     inkscape:window-width="1366"
+     inkscape:window-height="710"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
      inkscape:window-maximized="1" />
   <defs
      id="defs4" />
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -52,9 +52,10 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-520.86482)">
+     transform="translate(0,-1002.3608)">
     <g
-       id="g3959">
+       id="g3959"
+       transform="matrix(0.09692352,0,0,0.09692352,-0.26575783,953.61871)">
       <path
          id="path3889"
          d="m 9.1794485,594.44474 c 21.1152125,0 42.2304235,-16.00001 63.3456355,-16.00001 2.93e-4,0 5.86e-4,0 8.79e-4,0 21.114918,4.5e-4 42.229837,16.00001 63.344757,16.00001 2.9e-4,0 5.9e-4,0 8.8e-4,0 21.11492,-4.5e-4 42.22984,-16.00001 63.34476,-16.00001 2.9e-4,0 5.9e-4,0 8.8e-4,0 21.11492,4.5e-4 42.22983,16.00001 63.34475,16.00001 2.9e-4,0 5.9e-4,0 8.8e-4,0 21.11492,-4.5e-4 42.22984,-16.00001 63.34476,-16.00001 2.9e-4,0 5.9e-4,0 8.8e-4,0 21.11492,4.5e-4 42.22983,16.00001 63.34475,16.00001 2.9e-4,0 5.9e-4,0 8.8e-4,0 21.11492,-4.5e-4 42.22984,-16.00001 63.34476,-16.00001 2.9e-4,0 5.9e-4,0 8.8e-4,0 21.11492,4.5e-4 42.22983,16.00001 63.34475,16.00001 0,2.1e-4 0,4.2e-4 0,6.4e-4 0,7.72192 0,15.44383 0,23.16577 -2.9e-4,0 -5.9e-4,0 -8.8e-4,0 -21.11492,-4.5e-4 -42.22983,-16 -63.34475,-16 -2.9e-4,0 -5.9e-4,0 -8.8e-4,0 -21.11492,4.4e-4 -42.22984,16 -63.34476,16 -2.9e-4,0 -5.9e-4,0 -8.8e-4,0 -21.11492,-4.5e-4 -42.22983,-16 -63.34475,-16 -2.9e-4,0 -5.9e-4,0 -8.8e-4,0 -21.11492,4.4e-4 -42.22984,16 -63.34476,16 -2.9e-4,0 -5.9e-4,0 -8.8e-4,0 -21.11492,-4.5e-4 -42.22983,-16 -63.34475,-16 -2.9e-4,0 -5.9e-4,0 -8.8e-4,0 -21.11492,4.4e-4 -42.22984,16 -63.34476,16 -2.9e-4,0 -5.9e-4,0 -8.8e-4,0 -21.11492,-4.5e-4 -42.229838,-16 -63.344756,-16 -2.93e-4,0 -5.86e-4,0 -8.79e-4,0 -21.114919,4.4e-4 -42.229837,16 -63.3447565,16 0,-2.2e-4 0,-4.3e-4 0,-6.5e-4 0,-7.72193 0,-15.44384 0,-23.16576 0,0 0,0 0,0"

@@ -35,7 +35,7 @@ var plot = {
         })
     
         controls.outerWidth(function(){
-            return container.width() - plot.width
+            return container.width() - plot.width - 1
         })
     
         paper = new Raphael(document.getElementById('plot'), this.canvas.width() , this.canvas.height() );
@@ -84,12 +84,11 @@ var plot = {
         }
     
         for (i=0; i< times ; i++){
+            
             do{
-
                 x = Math.floor((Math.random() * width ) )
-                y = Math.floor((Math.random() * height ) ) 
-
-            }while( this.obstacles[y].indexOf(x) != -1 )
+                y = Math.floor((Math.random() * height ) )
+            }while( this.is_obstacle(x, y) || this.on_house(x , y))
 
             this.obstacles[y] = this.obstacles[y].concat(x)
         
@@ -139,6 +138,11 @@ var plot = {
     },
     is_obstacle: function(x,y){
         if( this.obstacles[y].indexOf(x) != -1 )
+            return true
+        return false
+    },
+    on_house: function( x , y){
+        if( this.house && x * 50 == this.house.attr("x") &&  y * 50 == this.house.attr("y"))
             return true
         return false
     }
