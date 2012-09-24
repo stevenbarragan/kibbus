@@ -1,12 +1,12 @@
 var kibbus
-var RIGTH = 68
-var LEFT = 65
-var UP = 87
-var DOWN = 88
-var UpRIGTH = 69
-var UpLEFTH = 81
+var RIGTH =     68
+var LEFT =      65
+var UP =        87
+var DOWN =      88
+var UpRIGTH =   69
+var UpLEFTH =   81
 var DownRIGTH = 67
-var DownLEFT = 90
+var DownLEFT =  90
     
 kibbus = {
     images : ["cow.svg" , "green-cow.svg" , "blue-cow.svg", "mouse.svg" , "elephant.svg"],
@@ -31,7 +31,7 @@ kibbus = {
             x : kibbus.x *50, 
             y : kibbus.y *50,
             opacity:0
-        }, 10 , "elasctic")
+        }, 10 , "elasctic").toFront()
         
         this.memory = []
         
@@ -112,7 +112,7 @@ kibbus = {
                     angle = -45
                     break;
             }
-            if( !plot.is_obstacle(x, y)){
+            if( !plot.is_obstacle(x, y) && plot.valid_position(x, y)){
                 this.x = x
                 this.y = y
                 if( angle != this.angle){

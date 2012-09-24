@@ -58,13 +58,13 @@ var plot = {
             
             this.grid.animate({
                 opacity: 0
-            }, 400 , "<>")
+            }, 400 , ">")
             
             this.grid_up = false
         }else{
             this.grid.animate({
                 opacity: 0.4
-            }, 400 , "<>")
+            }, 400 , "<")
             
             this.grid_up = true
         }
@@ -103,8 +103,12 @@ var plot = {
         setTimeout(function(){
             plot.obstacles_set.animate({
                 opacity:1
-            }, 500 , ">") , 100
-        })
+            }, 500 , ">")
+            if( kibbus.cow ){
+                kibbus.cow.toFront()
+            }
+        } , 100
+        )
     },
     set_house: function(x, y){
         this.canvas.mousemove(function(position){
@@ -129,8 +133,8 @@ var plot = {
             plot.canvas.unbind("mousemove")
             plot.canvas.unbind("click")
             
-            kibbus.x = Math.floor( param.pageX / 50  )
-            kibbus.y = Math.floor( (param.pageY - 50) / 50 )
+            kibbus.x = Math.floor( plot.house.attr("x") / 50  )
+            kibbus.y = Math.floor( plot.house.attr("y")  / 50 )
             
             kibbus.init()
             plot.house.toFront()
@@ -143,6 +147,11 @@ var plot = {
     },
     on_house: function( x , y){
         if( this.house && x * 50 == this.house.attr("x") &&  y * 50 == this.house.attr("y"))
+            return true
+        return false
+    },
+    valid_position : function(x, y){
+        if( x >= 0 && y >= 0 && x < this.width / 50 && y < this.height / 50 )
             return true
         return false
     }
