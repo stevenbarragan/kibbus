@@ -7,12 +7,13 @@ var plot = {
     grid_up : false,
     obstacles : {},
     obstacles_set : false,
-    forest:["fire.svg" , "flor.svg" , "flower.svg" , "flowers.png" , "river2.svg" , "river3.svg" , "rock.svg" , "tree.png", "tree.svg" , "tree2.svg" , "tree3.jpg" , "tree4.jpg" , "tree5.svg" , "tree6.svg" , "tree8.svg", "tree9.svg" , "tree10.svg" , "tree11.svg" , "tree12.svg" ,"tree13.svg" , "flor2.svg" , "tree7.svg"],
+    
     init: function(){
         this.set_size()
         this.obstacles_set = paper.set()
-        this.random(50)
+        forest.init()
     },
+    
     set_size : function(){
         
         var container = $("#container")
@@ -69,47 +70,6 @@ var plot = {
             this.grid_up = true
         }
     },
-    random : function(percent){
-        
-        width = this.width / 50
-        height = this.height / 50
-        
-        times = percent * height * width / 100
-        
-        this.obstacles = {}
-        this.obstacles_set.remove()
-        
-        for (i=0; i<height; i++){
-            this.obstacles[i] = new Array()
-        }
-    
-        for (i=0; i< times ; i++){
-            
-            do{
-                x = Math.floor((Math.random() * width ) )
-                y = Math.floor((Math.random() * height ) )
-            }while( this.is_obstacle(x, y) || this.on_house(x , y))
-
-            this.obstacles[y] = this.obstacles[y].concat(x)
-        
-            img_index = Math.floor((Math.random() * ( this.forest.length )) )
-
-            this.obstacles_set.push( paper.image("img/forest/" + this.forest[img_index], x * 50, y * 50, 50, 50)
-                .attr({
-                    opacity:0
-                }))
-        }
-        
-        setTimeout(function(){
-            plot.obstacles_set.animate({
-                opacity:1
-            }, 500 , ">")
-            if( kibbus.cow ){
-                kibbus.cow.toFront()
-            }
-        } , 100
-        )
-    },
     set_house: function(x, y){
         this.canvas.mousemove(function(position){
             
@@ -141,7 +101,7 @@ var plot = {
         })
     },
     is_obstacle: function(x,y){
-        if( this.obstacles[y].indexOf(x) != -1 )
+        if( forest.obstacles[y].indexOf(x) != -1 )
             return true
         return false
     },

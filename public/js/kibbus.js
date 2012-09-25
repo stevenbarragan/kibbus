@@ -1,4 +1,3 @@
-var kibbus
 var RIGTH =     68
 var LEFT =      65
 var UP =        87
@@ -8,7 +7,7 @@ var UpLEFTH =   81
 var DownRIGTH = 67
 var DownLEFT =  90
     
-kibbus = {
+var kibbus = {
     images : ["cow.svg" , "green-cow.svg" , "blue-cow.svg", "mouse.svg" , "elephant.svg"],
     moving: false,
     spining: false,
@@ -40,6 +39,8 @@ kibbus = {
             y : this.y * 50,
             transform: "r0"
         })
+        
+        slider.slider("enable")
     },
     spin: function(){
         this.spining = true
@@ -68,6 +69,8 @@ kibbus = {
             y : this.y* 50,
             transform: "r" + utils.invert_angle(kibbus.angle)
         })
+        
+        slider.slider("disable")
     },
     move : function(where){
         var x = this.x

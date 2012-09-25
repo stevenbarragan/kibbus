@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/jquery-ui.css">
 
         <!--[if lt IE 9]>
             <script src="js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
@@ -43,11 +44,14 @@
             <div id="controls">
                 <button class="btn btn-warning" id="set_grid">Set grid</button>
                 <br />
-                <button class="btn btn-warning" id="random">Random</button>
-                <br />
                 <button class="btn btn-warning" id="house">Set house</button>
                 <br />
                 <button class="btn btn-warning" id="back">Come back</button>
+                <br />
+                <div id="slider-wrapper">
+                    <div id="slider-vertical" style="height:200px;" title="40"></div>
+                    <input id="slider-value" type="text" value="50">
+                </div>
             </div>
         </div>
         <footer>
@@ -55,18 +59,22 @@
         </footer>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.1.min.js"><\/script>')</script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+        <script>jQuery.ui || document.write('<script src="js/vendor/jquery-ui.js"><\/script>')</script>
         <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/vendor/jquery-ui.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/raphael-min.js"></script>
         <script src="js/kibbus.js"></script>
+        <script src="js/forest.js"></script>
         <script src="js/plot.js"></script>
         <script src="js/main.js"></script>
         <script src="js/utils.js"></script>
         <script>
-//            var _gaq=[['_setAccount','UA-29744528-1'],['_trackPageview']];
-//            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-//                g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-//                s.parentNode.insertBefore(g,s)}(document,'script'));
+            //            var _gaq=[['_setAccount','UA-29744528-1'],['_trackPageview']];
+            //            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            //                g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            //                s.parentNode.insertBefore(g,s)}(document,'script'));
         </script>
     </body>
 </html>

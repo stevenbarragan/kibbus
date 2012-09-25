@@ -1,14 +1,11 @@
-var width = 22
-var height = 10
 var paper
-var obstacles
+var slider
 
 $(document).ready(function(){
     plot.init()
     
     $("#random").click(function(){
-        plot.random(50)
-    })
+        })
     
     $("#set_grid").click(function(){
         plot.set_grid()
@@ -20,6 +17,20 @@ $(document).ready(function(){
     $("#back").click(function(){
         kibbus.come_back()
     })
+    
+    slider = $( "#slider-vertical" ).slider({
+        orientation: "vertical",
+        range: "min",
+        min: 0,
+        max: 100,
+        value: 50,
+        slide: function( event, ui ) {
+            if(!forest.forest_working){
+                forest.set_forest(ui.value)
+            }
+            $("#slider-value").val(ui.value)
+        }
+    });
 })
 
 $(document).keydown(function(key){
