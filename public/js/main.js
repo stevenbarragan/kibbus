@@ -4,9 +4,6 @@ var slider
 $(document).ready(function(){
     plot.init()
     
-    $("#random").click(function(){
-        })
-    
     $("#set_grid").click(function(){
         plot.set_grid()
     })
@@ -21,8 +18,8 @@ $(document).ready(function(){
     slider = $( "#slider-vertical" ).slider({
         orientation: "vertical",
         range: "min",
-        min: 0,
-        max: 100,
+        min: 10,
+        max: 90,
         value: 50,
         slide: function( event, ui ) {
             if(!forest.forest_working){
