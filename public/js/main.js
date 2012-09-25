@@ -31,7 +31,7 @@ $(document).ready(function(){
     
     $("#instruction").popover({
         title : "Try to lose Kibbus",
-        content : "<b>First:</b> Click on \"Set house button\", and click on the forest you want the house<br /><b>Second:</b> Try to lose Kibbus: Keys to move him<br /><pre>Q W E\nA   D\nZ X C</pre>\n<b>Third</b>: Click on \"Come back\" and watch if Kibbus is lost",
+        content : "<b>First:</b> Click on \"Set house button\", then click on the forest you want the house.<br /><b>Second:</b> Try to lose Kibbus: Keys to move him.<br /><pre>Q W E\nA   D\nZ X C</pre>\n<b>Third</b>: Click on \"Come back\" and watch if Kibbus is lost.",
         placement : "bottom"
     })
 })
