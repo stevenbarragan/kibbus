@@ -10,3 +10,5 @@ if (!(window.console && console.log)) {
         }
     }());
 }
+
+var square_width = 50
