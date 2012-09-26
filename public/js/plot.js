@@ -7,13 +7,11 @@ var plot = {
     grid_up : false,
     obstacles : {},
     obstacles_set : false,
-    
     init: function(){
         this.set_size()
         this.obstacles_set = paper.set()
         forest.init()
     },
-    
     set_size : function(){
         
         var container = $("#container")
