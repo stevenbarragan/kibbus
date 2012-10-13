@@ -68,7 +68,7 @@ var plot = {
             this.grid_up = true
         }
     },
-    set_house: function(x, y){
+    set_house: function(){
         this.canvas.mousemove(function(position){
             
             x = position.pageX - ( position.pageX % 50 )
@@ -90,11 +90,7 @@ var plot = {
         this.canvas.click(function(param){
             plot.canvas.unbind("mousemove")
             plot.canvas.unbind("click")
-            
-            kibbus.x = Math.floor( plot.house.attr("x") / 50  )
-            kibbus.y = Math.floor( plot.house.attr("y")  / 50 )
-            
-            kibbus.init()
+
             plot.house.toFront()
         })
     },
@@ -112,5 +108,32 @@ var plot = {
         if( x >= 0 && y >= 0 && x < this.width / 50 && y < this.height / 50 )
             return true
         return false
+    },
+    set_kibbus: function(){
+        
+        this.canvas.mousemove(function(position){
+            
+            x = ( position.pageX - ( position.pageX % 50 ) ) / 50
+            y = ( position.pageY - ( position.pageY % 50 ) - 50 ) / 50
+            
+            if( !plot.is_obstacle(x , y )){
+                
+                kibbus.set_position(x,y)
+                
+                if(!kibbus.cow){
+                    kibbus.init()
+                }else{
+                    kibbus.translate(20)
+                }
+            }
+        })
+        
+        this.canvas.click(function(param){
+            plot.canvas.unbind("mousemove")
+            plot.canvas.unbind("click")
+            
+            kibbus.x = Math.floor( kibbus.cow.attr("x") / 50  )
+            kibbus.y = Math.floor( kibbus.cow.attr("y")  / 50 )
+        })
     }
 }

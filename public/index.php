@@ -19,6 +19,16 @@
         <![endif]-->
     </head>
     <body>
+        <?php
+        switch ($_GET["step"]) {
+            case "one":
+            case "two":
+                $step = $_GET["step"];
+                break;
+            default :
+                $step = "two";
+        }
+        ?>
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
@@ -43,17 +53,7 @@
         <div id="container">
             <div id="plot"></div>
             <div id="controls">
-                <button class="btn btn-warning" id="set_grid">Set grid</button>
-                <br />
-                <button class="btn btn-warning" id="house">Set house</button>
-                <br />
-                <button class="btn btn-warning" id="back">Come back</button>
-                <br />
-                Generate forest
-                <div id="slider-wrapper">
-                    <div id="slider-vertical" style="height:200px;" title="40"></div>
-                    <input id="slider-value" type="text" value="50">
-                </div>
+                <?php include 'controlers/' . $step . '.html'; ?>
             </div>
         </div>
         <footer>
@@ -61,19 +61,8 @@
                 <a href="mailto:me@steven.mx">me@steven.mx</a> | <a href="https://twitter.com/steven_barragan">@steven_barragan</a>
             </p>
         </footer>
-        <?php
-        echo $_GET["step"];
-        switch ($_GET["step"]) {
-            case "one":
-            case "two":
-                $step = $_GET["step"];
-                break;
-            default :
-                $step = "two";
-        }
-        ?>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.1.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery.js"><\/script>')</script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
         <script>jQuery.ui || document.write('<script src="js/vendor/jquery-ui.js"><\/script>')</script>
         <script src="js/vendor/bootstrap.min.js"></script>

@@ -115,7 +115,7 @@ var kibbus = {
                     angle = -45
                     break;
             }
-            if( !plot.is_obstacle(x, y) && plot.valid_position(x, y)){
+            if( !plot.is_obstacle(x, y) && plot.valid_position(x, y) && !plot.on_house( x , y )){
                 this.x = x
                 this.y = y
                 if( angle != this.angle){

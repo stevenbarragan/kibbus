@@ -17,7 +17,7 @@ var kibbus = {
     y:2,
     memory:[],
     init : function(){
-        
+
         var img = this.images[Math.floor( Math.random() * this.images.length )]
         
         if( !kibbus.cow ){
@@ -28,19 +28,9 @@ var kibbus = {
             src: "img/" + img
         }).animate({
             x : kibbus.x *50, 
-            y : kibbus.y *50,
-            opacity:0
+            y : kibbus.y *50
         }, 10 , "elasctic").toFront()
         
-        this.memory = []
-        
-        this.memory.push({
-            x : this.x * 50 ,
-            y : this.y * 50,
-            transform: "r0"
-        })
-        
-        slider.slider("enable")
     },
     spin: function(){
         this.spining = true
@@ -52,7 +42,10 @@ var kibbus = {
         });
         
     },
-    translate: function(){
+    translate: function(fast){
+        if(!fast){
+            fast = 500
+        }
         this.moving = true
         
         this.cow.animate({
@@ -60,14 +53,8 @@ var kibbus = {
             y : this.y * 50,
             transform: "r" + this.angle,
             opacity : 1
-        }, 500 , "<>", function(){
+        }, fast , "<>", function(){
             kibbus.moving = false
-        })
-        
-        this.memory.push({
-            x : this.x * 50,
-            y : this.y* 50,
-            transform: "r" + utils.invert_angle(kibbus.angle)
         })
         
         slider.slider("disable")
@@ -130,21 +117,49 @@ var kibbus = {
             }
         }
     },
-    come_back:function(){
-        if( this.memory.length > 0){
-            this.transform()
+    set_move : function( x , y ){
+        var move
+        
+        if( x == this.x){
+            if( y != this.y){
+                if( y > this.y ){
+                    move = LEFT
+                }else{
+                    move = RIGTH
+                }
+            }else{
+                move = false
+            }
         }else{
-            this.init()
+            if( y == this.y){
+                if( y > this.y ){
+                    move = UP
+                }else{
+                    move = DOWN
+                }
+            }else{
+                if( x > this.x ){
+                    if( y > this.y ){
+                        move = DownLEFT
+                    }else{
+                        move = DownRIGTH
+                    }
+                }else{
+                    if( y > this.y ){
+                        move = UpLEFT
+                    }else{
+                        move = UpRIGTH
+                    }
+                }
+            }
+        }
+        
+        if( move ){
+            this.move(move)
         }
     },
-    transform: function(){
-        var tx = kibbus.memory.pop()
-        this.x = tx.x / 50
-        this.y = tx.y / 50
-        this.cow.animate(tx, 350 , "<>")
-        
-        setTimeout( function(){
-            kibbus.come_back()
-        }, 250 )
+    set_position : function(x ,  y){
+        this.x = x
+        this.y = y
     }
 }
