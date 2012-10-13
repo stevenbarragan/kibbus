@@ -61,6 +61,17 @@
                 <a href="mailto:me@steven.mx">me@steven.mx</a> | <a href="https://twitter.com/steven_barragan">@steven_barragan</a>
             </p>
         </footer>
+        <?php
+        echo $_GET["step"];
+        switch ($_GET["step"]) {
+            case "one":
+            case "two":
+                $step = $_GET["step"];
+                break;
+            default :
+                $step = "two";
+        }
+        ?>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.1.min.js"><\/script>')</script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
@@ -69,11 +80,11 @@
         <script src="js/vendor/jquery-ui.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/raphael-min.js"></script>
-        <script src="js/kibbus.js"></script>
-        <script src="js/forest.js"></script>
-        <script src="js/plot.js"></script>
-        <script src="js/main.js"></script>
-        <script src="js/utils.js"></script>
+        <script src="js/step<?php echo $step ?>/kibbus.js"></script>
+        <script src="js/step<?php echo $step ?>/forest.js"></script>
+        <script src="js/step<?php echo $step ?>/plot.js"></script>
+        <script src="js/step<?php echo $step ?>/main.js"></script>
+        <script src="js/step<?php echo $step ?>/utils.js"></script>
         <script>
             var _gaq=[['_setAccount','UA-29744528-1'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
