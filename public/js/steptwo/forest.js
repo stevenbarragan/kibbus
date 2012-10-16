@@ -85,7 +85,7 @@ var forest = {
             this.x = Math.floor((Math.random() * width ) )
             this.y = Math.floor((Math.random() * height ) )
 
-        }while( plot.is_obstacle(this.x, this.y) || plot.on_house(this.x , this.y));
+        }while( plot.is_obstacle(this.x, this.y) || plot.on_house(this.x , this.y) || plot.on_kibbus(this.x,this.y) );
         
         this.obstacles[this.y] = this.obstacles[this.y].concat(this.x)
     }

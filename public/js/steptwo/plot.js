@@ -92,6 +92,10 @@ var plot = {
             plot.canvas.unbind("click")
 
             plot.house.toFront()
+            
+            if( kibbus.cow ){
+                slider.slider("enable")
+            }
         })
     },
     is_obstacle: function(x,y){
@@ -101,6 +105,11 @@ var plot = {
     },
     on_house: function( x , y){
         if( this.house && x * 50 == this.house.attr("x") &&  y * 50 == this.house.attr("y"))
+            return true
+        return false
+    },
+    on_kibbus : function(x,y){
+        if( kibbus.x == x && kibbus.y == y)
             return true
         return false
     },
@@ -134,6 +143,10 @@ var plot = {
             
             kibbus.x = Math.floor( kibbus.cow.attr("x") / 50  )
             kibbus.y = Math.floor( kibbus.cow.attr("y")  / 50 )
+            
+            if( plot.house ){
+                slider.slider("enable")
+            }
         })
     }
 }

@@ -14,6 +14,9 @@ $(document).ready(function(){
     $("#set_kibbus").click(function(){
         plot.set_kibbus()
     })
+    $("#go_home").click(function(){
+        kibbus.go_home()
+    })
     
     slider = $( "#slider-vertical" ).slider({
         orientation: "vertical",

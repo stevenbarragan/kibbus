@@ -13,9 +13,10 @@ var kibbus = {
     spining: false,
     angle : 0,
     cow : false,
-    x:2,
-    y:2,
+    x:-1,
+    y:-1,
     memory:[],
+    coordenates:[],
     init : function(){
 
         var img = this.images[Math.floor( Math.random() * this.images.length )]
@@ -42,9 +43,9 @@ var kibbus = {
         });
         
     },
-    translate: function(fast){
-        if(!fast){
-            fast = 500
+    translate: function(speed){
+        if(!speed){
+            fast = 400
         }
         this.moving = true
         
@@ -53,58 +54,23 @@ var kibbus = {
             y : this.y * 50,
             transform: "r" + this.angle,
             opacity : 1
-        }, fast , "<>", function(){
-            kibbus.moving = false
+        }, speed , "<>", function(){
+            if( speed == 400 ){
+                kibbus.move()
+            }
         })
         
         slider.slider("disable")
     },
-    move : function(where){
-        var x = this.x
-        var y = this.y
-        if(!this.spining){
-            angle = this.angle
-            switch(where){
-                case UP:
-                    y = this.y - 1
-                    angle = 180
-                    break;
-                case DOWN:
-                    y = this.y + 1
-                    angle = 0
-                    break;
-                case LEFT:
-                    x = this.x - 1
-                    angle = 90
-                    break;
-                case RIGTH:
-                    x = this.x + 1
-                    angle = -90
-                    break;
-                case UpLEFTH:
-                    x = this.x - 1
-                    y = this.y - 1
-                    angle = 135
-                    break;
-                case UpRIGTH:
-                    x = this.x + 1
-                    y = this.y - 1
-                    angle = 215
-                    break;
-                case DownLEFT:
-                    x = this.x - 1
-                    y = this.y + 1
-                    angle = 45
-                    break;
-                case DownRIGTH:
-                    x = this.x + 1
-                    y = this.y + 1
-                    angle = -45
-                    break;
-            }
-            if( !plot.is_obstacle(x, y) && plot.valid_position(x, y)){
-                this.x = x
-                this.y = y
+    move : function(){
+        if( this.coordenates.length > 0 ){
+            position = this.coordenates.shift()
+
+            angle = utils.calculate_angle( this.x, this.y , position.x, position.y)
+            
+            if( !plot.is_obstacle(position.x, position.y) && plot.valid_position(position.x, position.y) || true ){
+                this.x = position.x
+                this.y = position.y
                 if( angle != this.angle){
                     this.angle = angle
                     this.spin()
@@ -117,49 +83,23 @@ var kibbus = {
             }
         }
     },
-    set_move : function( x , y ){
-        var move
-        
-        if( x == this.x){
-            if( y != this.y){
-                if( y > this.y ){
-                    move = LEFT
-                }else{
-                    move = RIGTH
-                }
-            }else{
-                move = false
-            }
-        }else{
-            if( y == this.y){
-                if( y > this.y ){
-                    move = UP
-                }else{
-                    move = DOWN
-                }
-            }else{
-                if( x > this.x ){
-                    if( y > this.y ){
-                        move = DownLEFT
-                    }else{
-                        move = DownRIGTH
-                    }
-                }else{
-                    if( y > this.y ){
-                        move = UpLEFT
-                    }else{
-                        move = UpRIGTH
-                    }
-                }
-            }
-        }
-        
-        if( move ){
-            this.move(move)
-        }
-    },
     set_position : function(x ,  y){
         this.x = x
         this.y = y
+    },
+    go_home : function(){
+        $.post("utils.php",
+        {
+            to_do:"bresenham",
+            params : {
+                x0 : kibbus.x,
+                y0 : kibbus.y,
+                x1 : plot.house.attr("x")/50,
+                y1 : plot.house.attr("y")/50
+            }
+        }, function(data){
+            kibbus.coordenates = data.points
+            kibbus.move();
+        }, 'json')
     }
 }
