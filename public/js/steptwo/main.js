@@ -23,7 +23,7 @@ $(document).ready(function(){
         range: "min",
         min: 10,
         max: 90,
-        value: 50,
+        value: 30,
         slide: function( event, ui ) {
             if(!forest.forest_working){
                 forest.set_forest(ui.value)

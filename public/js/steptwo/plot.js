@@ -49,6 +49,11 @@ var plot = {
                 patron = "M 0 " + i + " l " + this.width + " 0"
                 this.grid.push( paper.path(patron) )
             }
+            for( var i = 0; i < this.width / 50 ; i++){
+                for( var j = 0; j < this.height / 50 ; j++){
+                    this.grid.push(paper.text(i*50 + 15  , j*50 + 5, i + " " + j))
+                }
+            }
             this.grid.attr({
                 opacity: 0
             })
@@ -99,8 +104,13 @@ var plot = {
         })
     },
     is_obstacle: function(x,y){
-        if( forest.obstacles[y].indexOf(x) != -1 )
+        if( this.valid_position(x, y) ){
+            if(forest.obstacles[y].indexOf(x) != -1 ){
+                return true
+            }
+        }else{
             return true
+        }
         return false
     },
     on_house: function( x , y){

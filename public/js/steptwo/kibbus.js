@@ -43,9 +43,9 @@ var kibbus = {
         });
         
     },
-    translate: function(speed){
+    translate: function(speed, go_home){
         if(!speed){
-            fast = 400
+            speed = 400
         }
         this.moving = true
         
@@ -55,31 +55,39 @@ var kibbus = {
             transform: "r" + this.angle,
             opacity : 1
         }, speed , "<>", function(){
-            if( speed == 400 ){
+            if( go_home ){
+                kibbus.go_home()
+            }
+            else if( speed == 400 ){
                 kibbus.move()
             }
         })
         
         slider.slider("disable")
     },
-    move : function(){
+    move : function(go_home){
         if( this.coordenates.length > 0 ){
             position = this.coordenates.shift()
 
             angle = utils.calculate_angle( this.x, this.y , position.x, position.y)
             
-            if( !plot.is_obstacle(position.x, position.y) && plot.valid_position(position.x, position.y) || true ){
+            if( !plot.is_obstacle(position.x, position.y) ){
+                
                 this.x = position.x
                 this.y = position.y
+                
                 if( angle != this.angle){
                     this.angle = angle
                     this.spin()
                     setTimeout(function(){
-                        kibbus.translate()
+                        kibbus.translate(400 , go_home)
                     } , 250 )
                 }else{
-                    this.translate()
+                    
+                    this.translate(400 , go_home)
                 }
+            }else{
+                this.find_other_way()
             }
         }
     },
@@ -101,5 +109,20 @@ var kibbus = {
             kibbus.coordenates = data.points
             kibbus.move();
         }, 'json')
+    },
+    find_other_way : function(){
+        
+        do{
+            x = Math.floor((Math.random() * 3 ) ) -1 + this.x
+            y = Math.floor((Math.random() * 3 ) ) -1 + this.y
+        }
+        while( (x == this.x && y== this.y) || plot.is_obstacle(x, y) )
+        
+        this.coordenates = new Array({
+            x:x,
+            y:y
+        })
+
+        this.move(true)
     }
 }
