@@ -16,19 +16,7 @@ var forest = {
             this.obstacles[i] = new Array()
         }
         
-        times = 50 * this.unit
-        
-        for (i=0;i< times; i++){
-            
-            this.generate_new_position()
-        
-            img_index = Math.floor((Math.random() * ( this.images.length )) )
-
-            this.obstacles_set.push( paper.image("img/forest/" + this.images[img_index], this.x * 50, this.y * 50, 50, 50)
-                .attr({
-                    opacity:0
-                }))
-        }
+        this.set_forest(30)
         
         setTimeout(function(){
             forest.obstacles_set.animate({
@@ -48,11 +36,11 @@ var forest = {
         
         if(times > this.obstacles_set.length ){
             do{
-                this.generate_new_position()
+                pos = this.generate_new_position()
                 
                 img_index = Math.floor((Math.random() * ( this.images.length )) )
 
-                this.obstacles_set.push( paper.image("img/forest/" + this.images[img_index], this.x * 50, this.y * 50, 50, 50)
+                this.obstacles_set.push( paper.image("img/forest/" + this.images[img_index], pos.x * 50, pos.y * 50, 50, 50)
                     .attr({
                         opacity:0
                     }))
@@ -81,12 +69,16 @@ var forest = {
         this.forest_working = false
     },
     generate_new_position:function(){
-        do{
-            this.x = Math.floor((Math.random() * width ) )
-            this.y = Math.floor((Math.random() * height ) )
-
-        }while( plot.is_obstacle(this.x, this.y) || plot.on_house(this.x , this.y) || plot.on_kibbus(this.x,this.y) );
+        pos = {}
         
-        this.obstacles[this.y] = this.obstacles[this.y].concat(this.x)
+        do{
+            pos.x = Math.floor((Math.random() * width ) )
+            pos.y = Math.floor((Math.random() * height ) )
+
+        }while( plot.is_obstacle(pos) || plot.on_house(pos) || plot.on_kibbus(pos) );
+        
+        this.obstacles[pos.y] = this.obstacles[pos.y].concat(pos.x)
+        
+        return pos
     }
 }

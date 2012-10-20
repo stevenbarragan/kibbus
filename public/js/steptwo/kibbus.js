@@ -17,6 +17,19 @@ var kibbus = {
     y:-1,
     memory:[],
     coordenates:[],
+    last:{
+        x:-1,
+        y:-1,
+        set: function(x , y ){
+            this.x = x
+            this.y = y
+        },
+        compare: function(pos){
+            if(this.x == pos.x && this.y == pos.y)
+                return true
+            return false
+        }
+    },
     init : function(){
 
         var img = this.images[Math.floor( Math.random() * this.images.length )]
@@ -43,35 +56,44 @@ var kibbus = {
         });
         
     },
-    translate: function(speed, go_home){
-        if(!speed){
-            speed = 400
-        }
-        this.moving = true
-        
+    translate_fast: function(position){
         this.cow.animate({
-            x : this.x * 50,
-            y : this.y * 50,
+            x : position.x * 50,
+            y : position.y * 50,
             transform: "r" + this.angle,
             opacity : 1
-        }, speed , "<>", function(){
-            if( go_home ){
-                kibbus.go_home()
-            }
-            else if( speed == 400 ){
+        }, 20, "bounce")
+    },
+    transtale_slow: function(position, search_home){
+        
+        if( plot.on_house(position))
+            opacity = 0
+        else
+            opacity = 1
+        
+        this.cow.animate({
+            x : position.x * 50,
+            y : position.y * 50,
+            transform: "r" + this.angle,
+            opacity : opacity
+        }, 400 , "linear", function(){
+            if( search_home ){
+                kibbus.search_home()
+            }else{
                 kibbus.move()
             }
         })
         
-        slider.slider("disable")
     },
-    move : function(go_home){
+    move : function(search_home){
         if( this.coordenates.length > 0 ){
             position = this.coordenates.shift()
 
             angle = utils.calculate_angle( this.x, this.y , position.x, position.y)
             
-            if( !plot.is_obstacle(position.x, position.y) ){
+            if( !plot.is_obstacle(position) ){
+                
+                this.last.set(this.x, this.y)
                 
                 this.x = position.x
                 this.y = position.y
@@ -80,22 +102,17 @@ var kibbus = {
                     this.angle = angle
                     this.spin()
                     setTimeout(function(){
-                        kibbus.translate(400 , go_home)
+                        kibbus.transtale_slow(position, search_home)
                     } , 250 )
                 }else{
-                    
-                    this.translate(400 , go_home)
+                    this.transtale_slow(position,search_home)
                 }
             }else{
                 this.find_other_way()
             }
         }
     },
-    set_position : function(x ,  y){
-        this.x = x
-        this.y = y
-    },
-    go_home : function(){
+    search_home : function(){
         $.post("utils.php",
         {
             to_do:"bresenham",
@@ -112,16 +129,37 @@ var kibbus = {
     },
     find_other_way : function(){
         
-        do{
-            x = Math.floor((Math.random() * 3 ) ) -1 + this.x
-            y = Math.floor((Math.random() * 3 ) ) -1 + this.y
-        }
-        while( (x == this.x && y== this.y) || plot.is_obstacle(x, y) )
+        checked = {}
+        checked[this.x-1] = new Array()
+        checked[this.x] = new Array()
+        checked[this.x+1] = new Array()
         
-        this.coordenates = new Array({
-            x:x,
-            y:y
-        })
+        pos = {}
+        
+        do{
+            pos.x = Math.floor((Math.random() * 3 ) ) -1 + this.x
+            pos.y = Math.floor((Math.random() * 3 ) ) -1 + this.y
+            
+            visited = false
+            
+            if( checked[pos.x].indexOf(pos.y) != -1 )
+                visited = true
+            else{
+                checked[pos.x] = checked[pos.x].concat(pos.y)
+            }
+            
+            checked_length = utils.get_length(checked)
+        }
+        while( visited || (pos.x == this.x && pos.y== this.y) || plot.is_obstacle(pos) || this.last.compare(pos) && checked_length < 7 )
+            
+        if(checked_length == 7){
+            this.coordenates = [last.x , last.y]
+        }else{
+            this.coordenates = new Array({
+                x:pos.x,
+                y:pos.y
+            })
+        }
 
         this.move(true)
     }

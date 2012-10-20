@@ -32,11 +32,11 @@ var plot = {
                 return 580
             return plot.width
         })
-    
+        
         controls.outerWidth(function(){
             return container.width() - plot.width - 1
         })
-    
+        
         paper = new Raphael(document.getElementById('plot'), this.canvas.width() , this.canvas.height() );
     },
     set_grid : function(){
@@ -79,7 +79,7 @@ var plot = {
             x = position.pageX - ( position.pageX % 50 )
             y = position.pageY - ( position.pageY % 50 ) - 50
             
-            if( !plot.is_obstacle(x / 50, y / 50)){
+            if( !plot.is_obstacle({ x:x / 50,  y : y / 50})){
                 
                 if(!plot.house){
                     plot.house = paper.image( "img/house.svg" , x , y, 50 , 50 )
@@ -88,24 +88,22 @@ var plot = {
                 plot.house.animate({
                     x : x,
                     y : y
-                }, 20 , "<>")
+                }, 20 , "bounce")
             }
         })
         
         this.canvas.click(function(param){
             plot.canvas.unbind("mousemove")
             plot.canvas.unbind("click")
-
+            
             plot.house.toFront()
             
-            if( kibbus.cow ){
-                slider.slider("enable")
-            }
+            plot.set_kibbus()
         })
     },
-    is_obstacle: function(x,y){
-        if( this.valid_position(x, y) ){
-            if(forest.obstacles[y].indexOf(x) != -1 ){
+    is_obstacle: function(coordenates){
+        if( this.valid_position(coordenates) ){
+            if(forest.obstacles[coordenates.y].indexOf(coordenates.x) != -1 ){
                 return true
             }
         }else{
@@ -113,18 +111,18 @@ var plot = {
         }
         return false
     },
-    on_house: function( x , y){
-        if( this.house && x * 50 == this.house.attr("x") &&  y * 50 == this.house.attr("y"))
+    on_house: function(position){
+        if( this.house && position.x * 50 == this.house.attr("x") &&  position.y * 50 == this.house.attr("y"))
             return true
         return false
     },
-    on_kibbus : function(x,y){
-        if( kibbus.x == x && kibbus.y == y)
+    on_kibbus : function(position){
+        if( kibbus.x == position.x && kibbus.y == position.y)
             return true
         return false
     },
-    valid_position : function(x, y){
-        if( x >= 0 && y >= 0 && x < this.width / 50 && y < this.height / 50 )
+    valid_position : function(coordenates){
+        if( coordenates.x >= 0 && coordenates.y >= 0 && coordenates.x < this.width / 50 && coordenates.y < this.height / 50 )
             return true
         return false
     },
@@ -132,17 +130,17 @@ var plot = {
         
         this.canvas.mousemove(function(position){
             
-            x = ( position.pageX - ( position.pageX % 50 ) ) / 50
-            y = ( position.pageY - ( position.pageY % 50 ) - 50 ) / 50
+            pos = {}
             
-            if( !plot.is_obstacle(x , y )){
-                
-                kibbus.set_position(x,y)
+            pos.x = ( position.pageX - ( position.pageX % 50 ) ) / 50
+            pos.y = ( position.pageY - ( position.pageY % 50 ) - 50 ) / 50
+            
+            if( !plot.is_obstacle(pos)){
                 
                 if(!kibbus.cow){
                     kibbus.init()
                 }else{
-                    kibbus.translate(20)
+                    kibbus.translate_fast(pos)
                 }
             }
         })
@@ -153,10 +151,6 @@ var plot = {
             
             kibbus.x = Math.floor( kibbus.cow.attr("x") / 50  )
             kibbus.y = Math.floor( kibbus.cow.attr("y")  / 50 )
-            
-            if( plot.house ){
-                slider.slider("enable")
-            }
         })
     }
 }

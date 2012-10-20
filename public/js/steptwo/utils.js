@@ -69,5 +69,12 @@ utils = {
         }
         
         return angle
+    },
+    get_length : function(arr){
+        sum = 0
+        $.each(arr, function(elemen){
+            sum += elemen.length
+        })
+        return sum
     }
 }

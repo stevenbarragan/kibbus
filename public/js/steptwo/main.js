@@ -2,21 +2,6 @@ var paper
 var slider
 
 $(document).ready(function(){
-    plot.init()
-    
-    $("#set_grid").click(function(){
-        plot.set_grid()
-    })
-    
-    $("#house").click(function(){
-        plot.set_house()
-    })
-    $("#set_kibbus").click(function(){
-        plot.set_kibbus()
-    })
-    $("#go_home").click(function(){
-        kibbus.go_home()
-    })
     
     slider = $( "#slider-vertical" ).slider({
         orientation: "vertical",
@@ -31,6 +16,23 @@ $(document).ready(function(){
             $("#slider-value").val(ui.value)
         }
     });
+    
+    
+    plot.init()
+    
+    $("#set_grid").click(function(){
+        plot.set_grid()
+    })
+    
+    $("#house").click(function(){
+        plot.set_house()
+    })
+    $("#set_kibbus").click(function(){
+        plot.set_kibbus()
+    })
+    $("#go_home").click(function(){
+        kibbus.search_home()
+    })
     
     $("#instruction").popover({
         title : "Try to lose Kibbus",

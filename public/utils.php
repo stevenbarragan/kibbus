@@ -36,6 +36,8 @@ class Utils {
         }
 
         $points[] = array("x" => $x1, "y" => $y1);
+        
+        array_shift($points);
 
         echo json_encode(array("points" => $points));
     }
