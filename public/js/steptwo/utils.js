@@ -76,5 +76,18 @@ utils = {
             sum += elemen.length
         })
         return sum
+    },
+    posibles_movents : function(pos){
+        pos_list = []
+        
+        for(x=pos.x-1; x<= pos.x + 1 ; x++){
+            for(y=pos.y-1;y<=pos.y + 1 ; y++){
+                if( plot.valid_position({x:x,y:y}) && (x != pos.x || y != pos.y )){
+                    pos_list.push({x:x,y:y})
+                }
+            }
+        }
+
+        return $.grep( pos_list , function( pos ){ return !plot.is_obstacle(pos) && !kibbus.is_visited(pos) && !kibbus.last.compare(pos) })
     }
 }

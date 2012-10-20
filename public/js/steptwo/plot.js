@@ -127,6 +127,8 @@ var plot = {
         return false
     },
     set_kibbus: function(){
+
+        kibbus.init()
         
         this.canvas.mousemove(function(position){
             
@@ -136,12 +138,7 @@ var plot = {
             pos.y = ( position.pageY - ( position.pageY % 50 ) - 50 ) / 50
             
             if( !plot.is_obstacle(pos)){
-                
-                if(!kibbus.cow){
-                    kibbus.init()
-                }else{
-                    kibbus.translate_fast(pos)
-                }
+                kibbus.translate_fast(pos)
             }
         })
         
@@ -151,6 +148,9 @@ var plot = {
             
             kibbus.x = Math.floor( kibbus.cow.attr("x") / 50  )
             kibbus.y = Math.floor( kibbus.cow.attr("y")  / 50 )
+            
+            kibbus.last.x = kibbus.x
+            kibbus.last.y = kibbus.y
         })
     }
 }

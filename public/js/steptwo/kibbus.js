@@ -9,14 +9,10 @@ var DownLEFT =  90
     
 var kibbus = {
     images : ["cow.svg" , "green-cow.svg" , "blue-cow.svg", "mouse.svg" , "elephant.svg"],
-    moving: false,
-    spining: false,
     angle : 0,
     cow : false,
     x:-1,
     y:-1,
-    memory:[],
-    coordenates:[],
     last:{
         x:-1,
         y:-1,
@@ -44,7 +40,13 @@ var kibbus = {
             x : kibbus.x *50, 
             y : kibbus.y *50
         }, 10 , "elasctic").toFront()
-        
+
+        this.visited_list = []
+        this.memory = []
+        this.coordenates =[]
+
+        this.last.x = this.x
+        this.last.y = this.y
     },
     spin: function(){
         this.spining = true
@@ -64,19 +66,24 @@ var kibbus = {
             opacity : 1
         }, 20, "bounce")
     },
-    transtale_slow: function(position, search_home){
+    transtale_slow: function(pos, search_home){
         
-        if( plot.on_house(position))
+        if( plot.on_house(pos))
             opacity = 0
         else
             opacity = 1
         
         this.cow.animate({
-            x : position.x * 50,
-            y : position.y * 50,
+            x : pos.x * 50,
+            y : pos.y * 50,
             transform: "r" + this.angle,
             opacity : opacity
         }, 400 , "linear", function(){
+            
+            kibbus.last.set(pos.x, pos.y)
+
+            kibbus.visit(pos)
+            
             if( search_home ){
                 kibbus.search_home()
             }else{
@@ -91,9 +98,7 @@ var kibbus = {
 
             angle = utils.calculate_angle( this.x, this.y , position.x, position.y)
             
-            if( !plot.is_obstacle(position) ){
-                
-                this.last.set(this.x, this.y)
+            if( !plot.is_obstacle(position) && !this.is_visited(position)){
                 
                 this.x = position.x
                 this.y = position.y
@@ -128,39 +133,80 @@ var kibbus = {
         }, 'json')
     },
     find_other_way : function(){
-        
-        checked = {}
-        checked[this.x-1] = new Array()
-        checked[this.x] = new Array()
-        checked[this.x+1] = new Array()
-        
-        pos = {}
-        
-        do{
-            pos.x = Math.floor((Math.random() * 3 ) ) -1 + this.x
-            pos.y = Math.floor((Math.random() * 3 ) ) -1 + this.y
-            
-            visited = false
-            
-            if( checked[pos.x].indexOf(pos.y) != -1 )
-                visited = true
-            else{
-                checked[pos.x] = checked[pos.x].concat(pos.y)
-            }
-            
-            checked_length = utils.get_length(checked)
-        }
-        while( visited || (pos.x == this.x && pos.y== this.y) || plot.is_obstacle(pos) || this.last.compare(pos) && checked_length < 7 )
-            
-        if(checked_length == 7){
-            this.coordenates = [last.x , last.y]
-        }else{
-            this.coordenates = new Array({
-                x:pos.x,
-                y:pos.y
-            })
-        }
 
-        this.move(true)
+        positions = utils.posibles_movents({x:this.x,y:this.y})
+
+        if(positions.length > 0 ){
+            index = Math.floor((Math.random() * positions.length ) )
+
+            this.coordenates = new Array({
+                x:positions[index].x,
+                y:positions[index].y
+            })
+
+            this.move(true)
+
+        }else{
+            if( !this.last.compare({x:this.x,y:this.y}) && !this.is_visited({x:this.x,y:this.y})){
+                this.coordenates = [{x:this.last.x , y:this.last.y}]
+                this.move(true)
+            }
+            else
+                alert("I'm lost")
+        }
+            
+    },
+    visit: function(pos){
+        visited = $.grep( this.visited_list , function( visited ){
+            return visited.x == pos.x && visited.y == pos.y
+        })
+
+        if( visited.length > 0 ){
+
+            visited[0].times++
+            switch(visited[0].times){
+                case 2:
+                    visited[0].image.animate({
+                        fill: "#FFFC00"
+                    } , 0 )
+                break;
+                case 3:
+                    visited[0].image.animate({
+                        fill: "#FF8000"
+                    } , 0 )
+                break;
+                case 4:
+                    visited[0].image.animate({
+                        fill: "#0DB8AD"
+                    } , 0  )
+                break;
+                case 5:
+                    visited[0].image.animate({
+                        fill: "#FF0000"
+                    } , 0  )
+                break;
+                default: 
+                    alert("error")
+            }
+        }else{
+            this.add_visited(pos)
+        }
+    },
+    is_visited : function(pos){
+        visited = $.grep( this.visited_list , function( visited ){
+            return visited.x == pos.x && visited.y == pos.y
+        })
+
+        if( visited.length > 0 && visited[0].times > 4)
+                return true
+        return false
+    },
+    add_visited: function(pos){
+        this.visited_list.push({
+            x:pos.x,
+            y:pos.y,
+            times:1,
+            image:paper.circle( ( pos.x * 50) + 25, (pos.y * 50) + 25, 6).attr("fill", "#adff2f")
+        })
     }
 }
