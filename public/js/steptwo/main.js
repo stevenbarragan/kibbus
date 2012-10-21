@@ -15,24 +15,19 @@ $(document).ready(function(){
             }
             $("#slider-value").val(ui.value)
         }
-    });
-    
+    });    
     
     plot.init()
+
+    $("#set_grid").click(function(){ plot.set_grid() })
     
-    $("#set_grid").click(function(){
-        plot.set_grid()
-    })
-    
-    $("#house").click(function(){
-        plot.set_house()
-    })
-    $("#set_kibbus").click(function(){
-        plot.set_kibbus()
-    })
-    $("#go_home").click(function(){
-        kibbus.search_home()
-    })
+    $("#house").click(function(){ plot.set_house() })
+
+    $("#set_kibbus").click(function(){ plot.set_kibbus() })
+
+    $("#go_home").click(function(){ kibbus.search_home() })
+
+    $("#show_flags").click(function(){plot.show_flags()})
     
     $("#instruction").popover({
         title : "Try to lose Kibbus",

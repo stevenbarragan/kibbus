@@ -1,12 +1,3 @@
-var RIGTH =     68
-var LEFT =      65
-var UP =        87
-var DOWN =      88
-var UpRIGTH =   69
-var UpLEFTH =   81
-var DownRIGTH = 67
-var DownLEFT =  90
-
 var kibbus = {
     images : ["cow.svg" , "green-cow.svg" , "blue-cow.svg", "elephant.svg"],
     angle : 0,
@@ -18,8 +9,7 @@ var kibbus = {
         y:-1,
         set: function(x , y ){
             this.x = x
-            this.y = y
-        },
+            this.y = y },
         compare: function(pos){
             if(this.x == pos.x && this.y == pos.y)
                 return true
@@ -122,7 +112,7 @@ var kibbus = {
                     this.transtale_slow(position,search_home)
                 }
             }else{
-                this.find_other_way()
+                this.find_another_way()
             }
         }
     },
@@ -141,7 +131,7 @@ var kibbus = {
             kibbus.move();
         }, 'json')
     },
-    find_other_way : function(){
+    find_another_way : function(){
         
         positions = utils.posibles_movents({x:this.x,y:this.y})
         
@@ -156,7 +146,7 @@ var kibbus = {
             this.move(true)
         
         }else{
-            if( !this.last.compare({x:this.x,y:this.y}) && !this.is_visited({x:this.x,y:this.y})){
+            if( !this.last.compare({x:this.x,y:this.y}) && !this.is_visited({x:this.last.x,y:this.last.y})){
                 this.coordenates = [{x:this.last.x , y:this.last.y}]
                 this.move(true)
             }
@@ -202,20 +192,16 @@ var kibbus = {
         }
     },
     is_visited : function(pos){
-        visited = $.grep( this.visited_list , function( visited ){
-            return visited.x == pos.x && visited.y == pos.y
-        })
+        visited = $.grep( this.visited_list , function( visited ){ return visited.x == pos.x && visited.y == pos.y })
         
         if( visited.length > 0 && visited[0].times > 4)
             return true
         return false
     },
     add_visited: function(pos){
-        this.visited_list.push({
-            x:pos.x,
-            y:pos.y,
-            times:1,
-            image:paper.circle( ( pos.x * 50) + 25, (pos.y * 50) + 25, 6).attr("fill", "#adff2f").toBack()
-        })
+        this.visited_list.push({ x:pos.x, y:pos.y, times:1,
+            image:paper.circle( ( pos.x * 50) + 25, (pos.y * 50) + 25, 6)
+            .attr({ fill: "#adff2f", opacity : plot.flag_opacity })
+            .toBack() })
     }
 }

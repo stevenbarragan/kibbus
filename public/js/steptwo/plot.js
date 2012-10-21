@@ -11,6 +11,7 @@ var plot = {
         this.set_size()
         this.obstacles_set = paper.set()
         forest.init()
+        this.flag_opacity = 1
     },
     set_size : function(){
         
@@ -74,21 +75,16 @@ var plot = {
         }
     },
     set_house: function(){
+        pos = {}
         this.canvas.mousemove(function(position){
+            pos.x = position.pageX - ( position.pageX % 50 )
+            pos.y = position.pageY - ( position.pageY % 50 ) - 50
             
-            x = position.pageX - ( position.pageX % 50 )
-            y = position.pageY - ( position.pageY % 50 ) - 50
-            
-            if( !plot.is_obstacle({ x:x / 50,  y : y / 50})){
+            if( !plot.is_obstacle({ x:pos.x / 50,  y : pos.y / 50})){
                 
-                if(!plot.house){
-                    plot.house = paper.image( "img/house.svg" , x , y, 50 , 50 )
-                }
+                if(!plot.house) plot.house = paper.image( "img/house.svg" , pos.x , pos.y, 50 , 50 )
                 
-                plot.house.animate({
-                    x : x,
-                    y : y
-                }, 20 , "bounce")
+                plot.house.animate(pos, 20 , "bounce")
             }
         })
         
@@ -101,13 +97,13 @@ var plot = {
             plot.set_kibbus()
         })
     },
-    is_obstacle: function(coordenates){
-        if( this.valid_position(coordenates) ){
-            if(forest.obstacles[coordenates.y].indexOf(coordenates.x) != -1 ){
+    is_obstacle: function(pos){
+        if( this.valid_position(pos) ){
+            if(forest.obstacles[pos.y].indexOf(pos.x) != -1 ){
                 return true
             }
         }else{
-            return true
+            return true 
         }
         return false
     },
@@ -121,8 +117,8 @@ var plot = {
             return true
         return false
     },
-    valid_position : function(coordenates){
-        if( coordenates.x >= 0 && coordenates.y >= 0 && coordenates.x < this.width / 50 && coordenates.y < this.height / 50 )
+    valid_position : function(pos){
+        if( pos.x >= 0 && pos.y >= 0 && pos.x < this.width / 50 && pos.y < this.height / 50 )
             return true
         return false
     },
@@ -151,6 +147,17 @@ var plot = {
             
             kibbus.last.x = kibbus.x
             kibbus.last.y = kibbus.y
+
+            kibbus.add_visited({x:kibbus.x,y:kibbus.y})
         })
+    },
+    show_flags : function(){
+        if( kibbus.visited_list != undefined ){
+            this.flag_opacity = this.flag_opacity == 1 ? 0 : 1
+
+            $.each(kibbus.visited_list , function(index,item){
+                item.image.animate({ opacity:plot.flag_opacity } , 450)
+            })
+        }
     }
 }
