@@ -1,5 +1,5 @@
 var kibbus = {
-    images : ["cow.svg" , "green-cow.svg" , "blue-cow.svg", "elephant.svg"],
+    images : ["cow.svg" , "green-cow.svg" , "blue-cow.svg"],
     angle : 0,
     cow : false,
     x:-1,
@@ -101,15 +101,18 @@ var kibbus = {
             angle = utils.calculate_angle( this.x, this.y , position.x, position.y)
             
             if( !plot.is_obstacle(position) && !this.is_visited(position)){
-                
-                if( angle != this.angle){
-                    this.angle = angle
-                    this.spin()
-                    setTimeout(function(){
-                        kibbus.transtale_slow(position, search_home)
-                    } , 250 )
+                if( this.coordenates.length > 0 && kibbus.last.compare(position)){
+                    this.find_another_way()
                 }else{
-                    this.transtale_slow(position,search_home)
+                    if( angle != this.angle){
+                        this.angle = angle
+                        this.spin()
+                        setTimeout(function(){
+                            kibbus.transtale_slow(position, search_home)
+                        } , 250 )
+                    }else{
+                        this.transtale_slow(position,search_home)
+                    }
                 }
             }else{
                 this.find_another_way()
@@ -117,15 +120,9 @@ var kibbus = {
         }
     },
     search_home : function(){
-        $.post("utils.php",
-        {
+        $.post("utils.php", {
             to_do:"bresenham",
-            params : {
-                x0 : kibbus.x,
-                y0 : kibbus.y,
-                x1 : plot.house.attr("x")/50,
-                y1 : plot.house.attr("y")/50
-            }
+            params : { x0 : kibbus.x, y0 : kibbus.y, x1 : plot.house.attr("x")/50, y1 : plot.house.attr("y")/50 }
         }, function(data){
             kibbus.coordenates = data.points
             kibbus.move();
@@ -136,13 +133,9 @@ var kibbus = {
         positions = utils.posibles_movents({x:this.x,y:this.y})
         
         if(positions.length > 0 ){
+            
             index = Math.floor((Math.random() * positions.length ) )
-            
-            this.coordenates = new Array({
-                x:positions[index].x,
-                y:positions[index].y
-            })
-            
+            this.coordenates = new Array({ x:positions[index].x, y:positions[index].y })
             this.move(true)
         
         }else{
@@ -165,27 +158,19 @@ var kibbus = {
             visited[0].times++
             switch(visited[0].times){
                 case 2:
-                    visited[0].image.animate({
-                        fill: "#FFFC00"
-                    } , 0 )
+                    visited[0].image.animate({ fill: "#FFFC00" } , 0 )
                     break;
                 case 3:
-                    visited[0].image.animate({
-                        fill: "#FF8000"
-                    } , 0 )
+                    visited[0].image.animate({ fill: "#FF8000" } , 0 )
                     break;
                 case 4:
-                    visited[0].image.animate({
-                        fill: "#0DB8AD"
-                    } , 0  )
+                    visited[0].image.animate({ fill: "#0DB8AD" } , 0 )
                     break;
                 case 5:
-                    visited[0].image.animate({
-                        fill: "#FF0000"
-                    } , 0  )
+                    visited[0].image.animate({ fill: "#FF0000" } , 0 )
                     break;
                 default:
-                    alert("error")
+                    console.log("Error con switch times")
             }
         }else{
             this.add_visited(pos)
@@ -193,10 +178,7 @@ var kibbus = {
     },
     is_visited : function(pos){
         visited = $.grep( this.visited_list , function( visited ){ return visited.x == pos.x && visited.y == pos.y })
-        
-        if( visited.length > 0 && visited[0].times > 4)
-            return true
-        return false
+        return visited.length > 0 && visited[0].times > 4
     },
     add_visited: function(pos){
         this.visited_list.push({ x:pos.x, y:pos.y, times:1,

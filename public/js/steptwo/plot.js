@@ -4,7 +4,6 @@ var plot = {
     width : 0,
     height : 500,
     grid : false,
-    grid_up : false,
     obstacles : {},
     obstacles_set : false,
     init: function(){
@@ -47,31 +46,25 @@ var plot = {
             for(var i = 50; i < this.width ; i+=50) {
                 patron = "M " + i + " 0 l 0 " + this.height
                 this.grid.push( paper.path(patron) )
+            }
+            for (var i = 50; i < this.height; i+=50) {
                 patron = "M 0 " + i + " l " + this.width + " 0"
                 this.grid.push( paper.path(patron) )
             }
-            for( var i = 0; i < this.width / 50 ; i++){
+            for(i = 0; i < this.width / 50 ; i++){
                 for( var j = 0; j < this.height / 50 ; j++){
-                    this.grid.push(paper.text(i*50 + 15  , j*50 + 5, i + " " + j))
+                    this.grid.push(paper.text(i*50 + 15  , j*50 + 5, i + "," + j))
                 }
             }
             this.grid.attr({
                 opacity: 0
             })
         }
-        if(this.grid_up){
-            
-            this.grid.animate({
-                opacity: 0
-            }, 400 , ">")
-            
-            this.grid_up = false
+
+        if(this.grid[0].attr("opacity") == 0.5){
+            this.grid.animate({ opacity: 0 }, 400 , ">")
         }else{
-            this.grid.animate({
-                opacity: 0.4
-            }, 400 , "<")
-            
-            this.grid_up = true
+            this.grid.animate({ opacity: 0.5 }, 400 , "<")
         }
     },
     set_house: function(){
@@ -93,7 +86,6 @@ var plot = {
             plot.canvas.unbind("click")
             
             plot.house.toFront()
-            
             plot.set_kibbus()
         })
     },
@@ -103,24 +95,18 @@ var plot = {
                 return true
             }
         }else{
-            return true 
+            return true
         }
         return false
     },
     on_house: function(position){
-        if( this.house && position.x * 50 == this.house.attr("x") &&  position.y * 50 == this.house.attr("y"))
-            return true
-        return false
+        return this.house && position.x * 50 == this.house.attr("x") &&  position.y * 50 == this.house.attr("y")
     },
     on_kibbus : function(position){
-        if( kibbus.x == position.x && kibbus.y == position.y)
-            return true
-        return false
+        return kibbus.x == position.x && kibbus.y == position.y
     },
     valid_position : function(pos){
-        if( pos.x >= 0 && pos.y >= 0 && pos.x < this.width / 50 && pos.y < this.height / 50 )
-            return true
-        return false
+        return pos.x >= 0 && pos.y >= 0 && pos.x < this.width / 50 && pos.y < this.height / 50
     },
     set_kibbus: function(){
 
