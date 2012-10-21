@@ -8,7 +8,7 @@ var DownRIGTH = 67
 var DownLEFT =  90
 
 var kibbus = {
-    images : ["cow.svg" , "green-cow.svg" , "blue-cow.svg", "mouse.svg" , "elephant.svg"],
+    images : ["cow.svg" , "green-cow.svg" , "blue-cow.svg", "elephant.svg"],
     angle : 0,
     cow : false,
     x:-1,
@@ -88,8 +88,11 @@ var kibbus = {
             transform: "r" + this.angle,
             opacity : opacity
         }, 400 , "linear", function(){
-            
-            kibbus.last.set(pos.x, pos.y)
+
+            kibbus.last.set(kibbus.x, kibbus.y)
+
+            kibbus.x = pos.x
+            kibbus.y = pos.y
             
             kibbus.visit(pos)
             
@@ -108,9 +111,6 @@ var kibbus = {
             angle = utils.calculate_angle( this.x, this.y , position.x, position.y)
             
             if( !plot.is_obstacle(position) && !this.is_visited(position)){
-                
-                this.x = position.x
-                this.y = position.y
                 
                 if( angle != this.angle){
                     this.angle = angle
