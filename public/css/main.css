@@ -1,47 +1,51 @@
 body {
-    padding-top: 60px;
-    padding-bottom: 10px;
+	padding-top: 60px;
+	padding-bottom: 10px;
 }
 footer{
-    bottom:0;
-    margin:0 auto;
-    padding:5px;
-    position:fixed;
-    text-align:center;
-    width:100%;
+	bottom:0;
+	margin:0 auto;
+	padding:5px;
+	position:fixed;
+	text-align:center;
+	width:100%;
 }
 #container {
-    margin: 0 auto;
-    min-height: 500px;
-    height: 100%;
-    width: 98%;
-    min-width: 580px;
+	margin: 0 auto;
+	min-height: 500px;
+	height: 100%;
+	width: 98%;
+	min-width: 580px;
 }
 #plot{
-    float: left;
-    height: inherit;
+	float: left;
+	height: inherit;
 }
 #controls{
-    width: 130px;	
-    background-color: #F5F5F5;
-    text-align: center;
-    padding: 10px;
-    height: 100px;
-    float: right;
-    height: inherit;
+	width: 130px;	
+	background-color: #F5F5F5;
+	text-align: center;
+	padding: 10px;
+	height: 100px;
+	float: right;
+	height: inherit;
 }
 .btn{
-    margin: 10px;
-    width: 80%;
+	margin: 10px;
+	width: 80%;
 }
 #slider-wrapper{
-    width: 60px;
-    margin: 10px auto;
+	width: 60px;
+	margin: 10px auto;
 }
 #slider-wrapper input{
-    width: 20px;
-    float: right;
+	width: 20px;
+	float: right;
 }
 #slider-vertical{
-    float: left;
+	float: left;
+}
+#select_step{
+	position:relative;
+	top:4px;
 }
