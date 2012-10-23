@@ -10,7 +10,7 @@ var plot = {
 		this.set_size()
 		this.obstacles_set = paper.set()
 		forest.init()
-		this.flag_opacity = 1
+		this.flag_opacity = 0
 	},
 	set_size : function(){
 		

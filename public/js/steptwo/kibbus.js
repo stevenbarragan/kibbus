@@ -115,13 +115,8 @@ var kibbus = {
 		}
 	},
 	search_home : function(){
-		$.post("utils.php", {
-			to_do:"bresenham",
-			params : { x0 : kibbus.x, y0 : kibbus.y, x1 : plot.house.attr("x")/50, y1 : plot.house.attr("y")/50 }
-		}, function(data){
-			kibbus.coordenates = data.points
-			kibbus.move();
-		}, 'json')
+		kibbus.coordenates = utils.bresenham(kibbus.x,kibbus.y,plot.house.attr("x")/50,plot.house.attr("y")/50)
+		kibbus.move();
 	},
 	find_another_way : function(){
 		
@@ -139,11 +134,12 @@ var kibbus = {
 				this.move(true)
 			}
 			else{
-				if(this.visited_list.length > 0 && this.visited_list_deleted < 2){
+				if(this.visited_list.length > 0 && this.visited_list_deleted < 1){
 					plot.delete_flags()
-					this.visited_list_deleted++
+					this.visited_list_deleted = 1
 					this.find_another_way()
 				}else{
+					this.visited_list_deleted = 0
 					alert("I'm lost =(")
 				}
 			}
