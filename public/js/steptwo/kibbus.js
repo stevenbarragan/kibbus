@@ -42,13 +42,16 @@ var kibbus = {
 		this.last.x = this.x
 		this.last.y = this.y
 	},
-	spin: function(){
-		this.spining = true
+	spin: function(params){
 		this.cow.animate({
 			transform: "r" + this.angle,
 			opacity : 1
-		}, 100, ">" , function(){
-			kibbus.spining = false
+		}, 125, ">" , function(){
+			if(params){
+				setTimeout(function(){
+					kibbus.transtale_slow(params.position, params.search_home)
+				} , 10 )
+			}
 		});
 	
 	},
@@ -72,8 +75,9 @@ var kibbus = {
 			y : pos.y * 50,
 			transform: "r" + this.angle,
 			opacity : opacity
-		}, 300 , "linear", function(){
+		}, 450)
 
+		setTimeout(function(){
 			kibbus.last.set(kibbus.x, kibbus.y)
 
 			kibbus.x = pos.x
@@ -86,7 +90,7 @@ var kibbus = {
 			}else{
 				kibbus.move()
 			}
-		})
+		}, 325 )
 	
 	},
 	move : function(search_home){
@@ -101,10 +105,7 @@ var kibbus = {
 				}else{
 					if( angle != this.angle){
 						this.angle = angle
-						this.spin()
-						setTimeout(function(){
-							kibbus.transtale_slow(position, search_home)
-						} , 250 )
+						this.spin({position:position,search_home:search_home})
 					}else{
 						this.transtale_slow(position,search_home)
 					}
