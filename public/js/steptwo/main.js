@@ -37,7 +37,7 @@ $(document).ready(function(){
 	
 	$("#why").popover({
 		title : "My AI school project",
-		content : "This is the second step to make Kibbus intelligent, now Kibbus knows his house's position, he has to look for a way through the forest, Kibbus always draws a straight line between him and the house to follow and when come across an obstacle, he moves to another place and he tries to follow a new straight line to get home.<br />He has a system of flags to know the places where he already has been, if the flag is red is considered as a bad place to go and Kibbus are not gonna be there again.<br />Please, if you find any bug let me know :D",
+		content : "This is the second step to make Kibbus intelligent, now Kibbus knows his house's position, she has to look for a way through the forest, Kibbus always draws a straight line, between her and the house, to follow and when she came across an obstacle, she moves to another place and she tries to follow a new straight line to get home.<br />He has a system of flags to know the places where he already has been, if the flag is red is considered as a bad place to go and Kibbus are not gonna be there again.<br />Please, if you find any bug let me know :D",
 		placement : "bottom"
 	})
 })
