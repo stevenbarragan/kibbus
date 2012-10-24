@@ -28,6 +28,8 @@ $(document).ready(function(){
 	$("#go_home").click(function(){ kibbus.search_home()})
 
 	$("#show_flags").click(function(){plot.show_flags()})
+
+	$("#add-remove").click(function(){ forest.add_remove()})
 	
 	$("#instruction").popover({
 		title : "What to do?",
@@ -37,7 +39,7 @@ $(document).ready(function(){
 	
 	$("#why").popover({
 		title : "My AI school project",
-		content : "This is the second step to make Kibbus intelligent, now Kibbus knows his house's position, she has to look for a way through the forest, Kibbus always draws a straight line, between her and the house, to follow and when she came across an obstacle, she moves to another place and she tries to follow a new straight line to get home.<br />Shee has a system of flags to know the places where she already has been, if the flag is red is considered as a bad place to go and Kibbus are not gonna be there again.<br />Please, if you find any bug let me know :D",
+		content : "This is the second step to make Kibbus intelligent, now Kibbus knows his house's position, she has to look for a way through the forest, Kibbus always draws a straight line, between her and the house, to follow and when she came across an obstacle, she moves to another place and she tries to follow a new straight line to get home.<br />She has a system of flags to know the places where she already has been. If the flag is red is considered as a bad place to go and Kibbus are not gonna be there again.<br />Please, if you find any bug let me know :D",
 		placement : "bottom"
 	})
 })

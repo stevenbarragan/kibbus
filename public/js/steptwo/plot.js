@@ -70,14 +70,16 @@ var plot = {
 	set_house: function(){
 		pos = {}
 		this.canvas.mousemove(function(position){
-			pos.x = position.pageX - ( position.pageX % 50 )
-			pos.y = position.pageY - ( position.pageY % 50 ) - 50
+			pos.x = Math.floor(( position.pageX - this.offsetLeft ) / 50)
+			pos.y = Math.floor(( position.pageY - this.offsetTop ) / 50)
 			
-			if( !plot.is_obstacle({ x:pos.x / 50,  y : pos.y / 50})){
+			if( !plot.is_obstacle(pos)){
 				
-				if(!plot.house) plot.house = paper.image( "img/house.svg" , pos.x , pos.y, 50 , 50 )
+				if(!plot.house) plot.house = paper.image( "img/house.svg" , pos.x * 50 , pos.y * 50 , 50 , 50 )
 				
-				plot.house.animate(pos, 20 , "bounce")
+				pos.x *= 50
+				pos.y *= 50
+				plot.house.animate(pos, 30 , "bounce")
 			}
 		})
 		
@@ -116,8 +118,8 @@ var plot = {
 			
 			pos = {}
 			
-			pos.x = ( position.pageX - ( position.pageX % 50 ) ) / 50
-			pos.y = ( position.pageY - ( position.pageY % 50 ) - 50 ) / 50
+			pos.x = Math.floor(( position.pageX - this.offsetLeft ) / 50)
+			pos.y = Math.floor(( position.pageY - this.offsetTop ) / 50)
 			
 			if( !plot.is_obstacle(pos)){
 				kibbus.translate_fast(pos)

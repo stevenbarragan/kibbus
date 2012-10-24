@@ -40,10 +40,12 @@ var forest = {
 				
 				img_index = Math.floor((Math.random() * ( this.images.length )) )
 
-				this.obstacles_set.push( paper.image("img/forest/" + this.images[img_index], pos.x * 50, pos.y * 50, 50, 50)
+				this.obstacles_set.push(
+					paper.image("img/forest/" + this.images[img_index], pos.x * 50, pos.y * 50, 50, 50)
 					.attr({
 						opacity:0
 					}))
+
 			}while(times > this.obstacles_set.length);
 			
 			this.obstacles_set.animate({
@@ -80,5 +82,81 @@ var forest = {
 		this.obstacles[pos.y] = this.obstacles[pos.y].concat(pos.x)
 		
 		return pos
+	},
+	remove_obstacle : function(pos){
+		forest.obstacles[pos.y].splice( forest.obstacles[pos.y].indexOf(pos.x) , 1 )
+	},
+	add_obstacle: function(pos,obscacle){
+		this.obstacles[pos.y] = this.obstacles[pos.y].concat(pos.x)
+		this.obstacles_set.push( obscacle )
+	},
+	add_remove:function(status){
+		if(!this.add_remove_status){
+			forest.obstacles_set
+					.hover( obstacle_mouseover , obstacle_mouseout )
+					.click(obstacle_click)
+
+			img_index = Math.floor((Math.random() * ( this.images.length )) )
+			
+			pos = {}
+			
+			image = false
+			
+			plot.canvas.mousemove(function(position){
+				pos.x = Math.floor(( position.pageX - this.offsetLeft ) / 50)
+				pos.y = Math.floor(( position.pageY - this.offsetTop ) / 50)
+
+				if(!image) image = paper.image("img/forest/" + forest.images[img_index], pos.x*50 , pos.y*50 , 50, 50).toBack()
+				
+				if(plot.is_obstacle({ x:pos.x,  y : pos.y})){
+					image.animate({
+						x: pos.x*50,
+						y: pos.y*50,
+						opacity : 0
+					} , 10 )
+				}else{
+					image.animate({
+						x: pos.x*50,
+						y: pos.y*50,
+						opacity : 1
+					} , 50 )
+				}
+			})
+
+			plot.canvas.click(function(position){
+				pos.x = Math.floor(( position.pageX - this.offsetLeft ) / 50)
+				pos.y = Math.floor(( position.pageY - this.offsetTop ) / 50)
+
+				if(plot.is_obstacle({ x:pos.x,  y : pos.y})){
+					forest.remove_obstacle(pos)
+				}else{
+					forest.add_obstacle(pos , image )
+					forest.add_remove()
+					forest.add_remove()
+				}
+			})
+
+			this.add_remove_status = true
+		}else{
+			this.add_remove_status = false
+			forest.obstacles_set
+				.unhover(obstacle_mouseover, obstacle_mouseout )
+				.unclick(obstacle_click)
+
+			plot.canvas.unbind("mousemove")
+			plot.canvas.unbind("click")
+		}
 	}
+	,
+	mouseover : function(item){
+		item.animate({ opacity:0.3 }, 100 )
+	},
+	mouseout : function(item){
+		item.animate({ opacity:1 }, 100 )
+	}
+
 }
+
+obstacle_mouseover = function(){ forest.mouseover(this) }
+obstacle_mouseout = function(){ forest.mouseout(this) }
+obstacle_click = function(){this.remove()}
