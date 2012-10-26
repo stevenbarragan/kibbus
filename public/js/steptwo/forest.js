@@ -90,8 +90,13 @@ var forest = {
 		this.obstacles[pos.y] = this.obstacles[pos.y].concat(pos.x)
 		this.obstacles_set.push( obscacle )
 	},
+	to_add:{
+		img : false,
+		seted: false
+	},
 	add_remove:function(status){
-		if(!this.add_remove_status){
+		if(!this.add_remove_status && !status){
+
 			forest.obstacles_set
 					.hover( obstacle_mouseover , obstacle_mouseout )
 					.click(obstacle_click)
@@ -99,23 +104,23 @@ var forest = {
 			img_index = Math.floor((Math.random() * ( this.images.length )) )
 			
 			pos = {}
-			
-			image = false
-			
+			forest.to_add.img = false
+			forest.to_add.seted = false
+
 			plot.canvas.mousemove(function(position){
 				pos.x = Math.floor(( position.pageX - this.offsetLeft ) / 50)
 				pos.y = Math.floor(( position.pageY - this.offsetTop ) / 50)
 
-				if(!image) image = paper.image("img/forest/" + forest.images[img_index], pos.x*50 , pos.y*50 , 50, 50).toBack()
+				if(!forest.to_add.img) forest.to_add.img = paper.image("img/forest/" + forest.images[img_index], pos.x*50 , pos.y*50 , 50, 50).toBack()
 				
 				if(plot.is_obstacle({ x:pos.x,  y : pos.y})){
-					image.animate({
+					forest.to_add.img.animate({
 						x: pos.x*50,
 						y: pos.y*50,
 						opacity : 0
 					} , 10 )
 				}else{
-					image.animate({
+					forest.to_add.img.animate({
 						x: pos.x*50,
 						y: pos.y*50,
 						opacity : 1
@@ -127,10 +132,11 @@ var forest = {
 				pos.x = Math.floor(( position.pageX - this.offsetLeft ) / 50)
 				pos.y = Math.floor(( position.pageY - this.offsetTop ) / 50)
 
-				if(plot.is_obstacle({ x:pos.x,  y : pos.y})){
+				if(plot.is_obstacle({ x:pos.x, y:pos.y})){
 					forest.remove_obstacle(pos)
 				}else{
-					forest.add_obstacle(pos , image )
+					forest.add_obstacle(pos , forest.to_add.img	 )
+					forest.to_add.seted = true
 					forest.add_remove()
 					forest.add_remove()
 				}
@@ -139,6 +145,14 @@ var forest = {
 			this.add_remove_status = true
 		}else{
 			this.add_remove_status = false
+			if(!this.to_add.seted && this.to_add.img != false){				
+				this.to_add.img.animate({opacity:0} , 400 , "linear" , function(){
+					this.remove()
+				} )
+				this.to_add.img = false
+				$("#add-remove").button('toggle')
+			}
+
 			forest.obstacles_set
 				.unhover(obstacle_mouseover, obstacle_mouseout )
 				.unclick(obstacle_click)

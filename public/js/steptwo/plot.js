@@ -10,7 +10,7 @@ var plot = {
 		this.set_size()
 		this.obstacles_set = paper.set()
 		forest.init()
-		this.flag_opacity = 0
+		this.flag_opacity = 1
 	},
 	set_size : function(){
 		
@@ -68,6 +68,9 @@ var plot = {
 		}
 	},
 	set_house: function(){
+
+		forest.add_remove(true)
+
 		pos = {}
 		this.canvas.mousemove(function(position){
 			pos.x = Math.floor(( position.pageX - this.offsetLeft ) / 50)
@@ -83,12 +86,11 @@ var plot = {
 			}
 		})
 		
-		this.canvas.click(function(param){
+		this.canvas.click(function(){
 			plot.canvas.unbind("mousemove")
 			plot.canvas.unbind("click")
 			
 			plot.house.toFront()
-			plot.set_kibbus()
 		})
 	},
 	is_obstacle: function(pos){
@@ -111,6 +113,8 @@ var plot = {
 		return pos.x >= 0 && pos.y >= 0 && pos.x < this.width / 50 && pos.y < this.height / 50
 	},
 	set_kibbus: function(){
+
+		forest.add_remove(true)
 
 		kibbus.init()
 		

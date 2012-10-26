@@ -1,4 +1,4 @@
-var paper
+												var paper
 var slider
 
 $(document).ready(function(){
@@ -29,7 +29,10 @@ $(document).ready(function(){
 
 	$("#show_flags").click(function(){plot.show_flags()})
 
-	$("#add-remove").click(function(){ forest.add_remove()})
+	$("#add-remove").click(function(){
+		$(this).button('toggle')
+		forest.add_remove()
+	})
 	
 	$("#instruction").popover({
 		title : "What to do?",
