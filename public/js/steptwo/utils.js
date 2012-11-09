@@ -96,5 +96,8 @@ utils = {
 		points.shift()
 
 		return points
+	},
+	calculate_velocity: function(standar_velocity){
+		return standar_velocity / velocity
 	}
 }

@@ -134,7 +134,7 @@ var forest = {
 
 				if(plot.is_obstacle({ x:pos.x, y:pos.y})){
 					forest.remove_obstacle(pos)
-				}else{
+				}else if(!plot.on_house(pos) && !plot.on_kibbus(pos)){
 					forest.add_obstacle(pos , forest.to_add.img	 )
 					forest.to_add.seted = true
 					forest.add_remove()

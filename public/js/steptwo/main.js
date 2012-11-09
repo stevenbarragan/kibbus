@@ -1,5 +1,6 @@
-												var paper
+var paper
 var slider
+var velocity = 1
 
 $(document).ready(function(){
 	
@@ -15,7 +16,17 @@ $(document).ready(function(){
 			}
 			$("#slider-value").val(ui.value)
 		}
-	});    
+	});
+
+	$( "#slider-vertical-velocity" ).slider({
+		range: "min",
+		max: 3,
+		min: 1,
+		value: 1,
+		slide: function( event, ui ) {
+			velocity = ui.value
+		}
+	});
 	
 	plot.init()
 

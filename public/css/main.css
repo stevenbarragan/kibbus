@@ -31,7 +31,7 @@ footer{
 	height: inherit;
 }
 .btn{
-	margin: 10px;
+	margin: 2px;
 	width: 80%;
 }
 #slider-wrapper{
@@ -48,4 +48,13 @@ footer{
 #select_step{
 	position:relative;
 	top:4px;
+}
+#slider-wrapper-velocity{
+	clear: both;
+	position: relative;
+	top: 10px;
+	text-align: center;
+}
+#slider-vertical-velocity{
+	/*margin: 0 auto;*/
 }

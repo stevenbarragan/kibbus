@@ -29,7 +29,7 @@ var kibbus = {
 		}).animate({
 			x : kibbus.x *50, 
 			y : kibbus.y *50
-		}, 10 , "elasctic").toFront()
+		}, utils.calculate_velocity(10) , "elasctic").toFront()
 		
 		if( this.visited_list != undefined ){
 			plot.delete_flags()
@@ -46,11 +46,11 @@ var kibbus = {
 		this.cow.animate({
 			transform: "r" + this.angle,
 			opacity : 1
-		}, 125, ">" , function(){
+		}, utils.calculate_velocity(125) , ">" , function(){
 			if(params){
 				setTimeout(function(){
 					kibbus.transtale_slow(params.position, params.search_home)
-				} , 10 )
+				} , utils.calculate_velocity(10) )
 			}
 		});
 	
@@ -75,7 +75,7 @@ var kibbus = {
 			y : pos.y * 50,
 			transform: "r" + this.angle,
 			opacity : opacity
-		}, 450)
+		}, utils.calculate_velocity(450))
 
 		setTimeout(function(){
 			kibbus.last.set(kibbus.x, kibbus.y)
@@ -90,7 +90,7 @@ var kibbus = {
 			}else{
 				kibbus.move()
 			}
-		}, 325 )
+		}, utils.calculate_velocity(325) )
 	
 	},
 	move : function(search_home){
@@ -157,16 +157,16 @@ var kibbus = {
 			visited[0].times++
 			switch(visited[0].times){
 				case 2:
-					visited[0].image.animate({ fill: "#FFFC00" } , 0 )
+					visited[0].image.animate({ fill: "#FFFC00" } , 10 )
 					break;
 				case 3:
-					visited[0].image.animate({ fill: "#FF8000" } , 0 )
+					visited[0].image.animate({ fill: "#FF8000" } , 10 )
 					break;
 				case 4:
-					visited[0].image.animate({ fill: "#0DB8AD" } , 0 )
+					visited[0].image.animate({ fill: "#0DB8AD" } , 10 )
 					break;
 				case 5:
-					visited[0].image.animate({ fill: "#FF0000" } , 0 )
+					visited[0].image.animate({ fill: "#FF0000" } , 10 )
 					break;
 				default:
 					console.log("Error con switch times")
