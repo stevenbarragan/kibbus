@@ -7,8 +7,8 @@ $(document).ready(function(){
 	slider = $( "#slider-vertical" ).slider({
 		orientation: "vertical",
 		range: "min",
-		min: 10,
-		max: 90,
+		min: 0,
+		max: 100,
 		value: 30,
 		slide: function( event, ui ) {
 			if(!forest.forest_working){
@@ -20,9 +20,10 @@ $(document).ready(function(){
 
 	$( "#slider-vertical-velocity" ).slider({
 		range: "min",
-		max: 3,
-		min: 1,
+		max: 2.5,
+		min: 0.5,
 		value: 1,
+		step: 0.5,
 		slide: function( event, ui ) {
 			velocity = ui.value
 		}
@@ -41,7 +42,7 @@ $(document).ready(function(){
 	$("#show_flags").click(function(){plot.show_flags()})
 
 	$("#add-remove").click(function(){
-		$(this).button('toggle')
+		// $(this).button('toggle')
 		forest.add_remove()
 	})
 	

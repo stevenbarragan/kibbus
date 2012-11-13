@@ -34,7 +34,8 @@ var forest = {
 		
 		times = amount * this.unit
 		
-		if(times > this.obstacles_set.length ){
+		if(times - 2 > this.obstacles_set.length){
+
 			do{
 				pos = this.generate_new_position()
 				
@@ -46,7 +47,7 @@ var forest = {
 						opacity:0
 					}))
 
-			}while(times > this.obstacles_set.length);
+			}while(times - 2 > this.obstacles_set.length);
 			
 			this.obstacles_set.animate({
 				opacity:1
@@ -160,8 +161,7 @@ var forest = {
 			plot.canvas.unbind("mousemove")
 			plot.canvas.unbind("click")
 		}
-	}
-	,
+	},
 	mouseover : function(item){
 		item.animate({ opacity:0.3 }, 100 )
 	},
