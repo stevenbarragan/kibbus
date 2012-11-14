@@ -54,17 +54,24 @@ var forest = {
 			}, 150 , ">")
 		}else{
 			do{
-				tree = this.obstacles_set.pop()
+				do{
+					tree = this.obstacles_set.pop()
+				}
+				while(tree.id == null && this.obstacles_set.length > 0)
 
-				y = tree.attr("y") / 50
-			   
-				this.obstacles[y].pop()
-				
-				tree.animate({
-					opacity:0
-				}, 150 , ">", function(){
-					this.remove()
-				})
+				if( tree.id != null){
+
+					y = tree.attr("y") / 50
+					x = tree.attr("x") / 50
+				   
+					this.remove_obstacle({x:x,y:y})
+					
+					tree.animate({
+						opacity:0
+					}, 150 , ">", function(){
+						this.remove()
+					})
+				}
 				
 			}while(times < this.obstacles_set.length );
 		}
@@ -86,10 +93,15 @@ var forest = {
 	},
 	remove_obstacle : function(pos){
 		forest.obstacles[pos.y].splice( forest.obstacles[pos.y].indexOf(pos.x) , 1 )
+
+		slider.slider("value" , slider.slider("value") - ( 1 / this.unit ) )
 	},
 	add_obstacle: function(pos,obscacle){
 		this.obstacles[pos.y] = this.obstacles[pos.y].concat(pos.x)
 		this.obstacles_set.push( obscacle )
+
+		slider.slider("value" , slider.slider("value") + ( 1 / this.unit ) )
+
 	},
 	to_add:{
 		img : false,
@@ -133,8 +145,9 @@ var forest = {
 				pos.x = Math.floor(( position.pageX - this.offsetLeft ) / 50)
 				pos.y = Math.floor(( position.pageY - this.offsetTop ) / 50)
 
-				if(plot.is_obstacle({ x:pos.x, y:pos.y})){
+				if(plot.is_obstacle(pos)){
 					forest.remove_obstacle(pos)
+
 				}else if(!plot.on_house(pos) && !plot.on_kibbus(pos)){
 					forest.add_obstacle(pos , forest.to_add.img	 )
 					forest.to_add.seted = true
@@ -147,9 +160,8 @@ var forest = {
 		}else{
 			this.add_remove_status = false
 			if(!this.to_add.seted && this.to_add.img != false){				
-				this.to_add.img.animate({opacity:0} , 400 , "linear" , function(){
-					this.remove()
-				} )
+				
+				this.to_add.img.animate({opacity:0} , 400 , "linear" , function(){ this.remove() })
 				this.to_add.img = false
 				$("#add-remove").button('toggle')
 			}
@@ -173,4 +185,7 @@ var forest = {
 
 obstacle_mouseover = function(){ forest.mouseover(this) }
 obstacle_mouseout = function(){ forest.mouseout(this) }
-obstacle_click = function(){this.remove()}
+obstacle_click = function(){
+	forest.obstacles_set.splice( $.inArray( this , forest.obstacles_set ) , 1 )
+	this.remove()
+}

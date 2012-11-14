@@ -14,7 +14,9 @@ $(document).ready(function(){
 			if(!forest.forest_working){
 				forest.set_forest(ui.value)
 			}
-			$("#slider-value").val(ui.value)
+		},
+		change:function(){
+			$("#slider-value").val( slider.slider("value") )
 		}
 	});
 
