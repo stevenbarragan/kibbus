@@ -19,15 +19,15 @@
 	</head>
 	<body>
 		<?php
-		switch ($_GET["step"]) {
+		switch ($_GET["step"]){
 			case "one":
 			case "two":
+			case "third":
 				$step = $_GET["step"];
 				break;
 			default :
-				$step = "two";
-		}
-		?>
+				$step = "third";
+		}?>
 		<!--[if lt IE 7]>
 			<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
 		<![endif]-->
@@ -46,8 +46,9 @@
 							<li class=""><a href="#" id="why">Why</a></li>
 						</ul>
 						<select id="select_step">
-							<option value="one" <?php echo $step == "one" ? 'selected' : '' ?>>First step</option>
-							<option value="two" <?php echo $step == "two" ? 'selected' : '' ?>>Second step</option>
+							<option value="one" <?php echo $step == "one" ? 'selected' : '' ?>>Step first</option>
+							<option value="two" <?php echo $step == "two" ? 'selected' : '' ?>>Step second</option>
+							<option value="third" <?php echo $step == "third" ? 'selected' : '' ?>>Step third</option>
 						</select>
 					</div><!--/.nav-collapse -->
 				</div>
