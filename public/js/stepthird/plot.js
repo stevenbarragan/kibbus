@@ -136,31 +136,35 @@ var plot = {
 			
 			kibbus.x = Math.floor( kibbus.cow.attr("x") / 50  )
 			kibbus.y = Math.floor( kibbus.cow.attr("y")  / 50 )
-			
-			kibbus.last.x = kibbus.x
-			kibbus.last.y = kibbus.y
 
-			kibbus.add_visited({x:kibbus.x,y:kibbus.y})
 		})
 	},
-	show_flags : function(){
-		if( kibbus.visited_list != undefined ){
-			this.flag_opacity = this.flag_opacity == 1 ? 0 : 1
+	get_temperature: function(position){
 
-			$.each(kibbus.visited_list , function(index,item){
-				item.image.animate({ opacity:plot.flag_opacity } , 450)
-			})
+		var frozen_item = this.search_frozen(position)
+
+		if(frozen_item)
+			return frozen_item.temperature
+
+		return -utils.distance_two_points(position , {x : this.house.attr("x") / 50 , y:this.house.attr("y") / 50 })
+	},
+	frozen : [],
+	search_frozen : function(position){
+		for (var i = this.frozen.length - 1; i >= 0; i--) {
+			if(this.frozen[i].x == position.x && this.frozen[0].y == position.y){
+				return this.frozen[i]
+			}
 		}
+		return false
 	},
-	delete_flags : function(){
-		$.each(kibbus.visited_list , function(index,item){
-			item.image.animate({
-				opacity:0
-			} , 350 , function(){
-				this.remove()
-			})
-		})
+	freeze : function(position , temperature){
 
-		kibbus.visited_list = []
+		var frozen_item = this.search_frozen(position)
+
+		if(frozen_item)
+			frozen_item.temperature = temperature
+		else
+			this.frozen.push({x:position.x, y: position.y , value: temperature})
+
 	}
 }

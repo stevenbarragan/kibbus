@@ -51,53 +51,59 @@ utils = {
 		})
 		return sum
 	},
-	posibles_movents : function(pos){
+	posibles_movents : function(pos, visited_list){
 		pos_list = []
 		
 		for(x=pos.x-1; x<= pos.x + 1 ; x++){
 			for(y=pos.y-1;y<=pos.y + 1 ; y++){
 				pos2 = { x:x, y:y }
-				if( plot.valid_position(pos2) && (x != pos.x || y != pos.y ) && !plot.is_obstacle(pos2) && !kibbus.is_visited(pos2) && !kibbus.last.compare(pos2))
+				if( plot.valid_position(pos2) && (x != pos.x || y != pos.y ) && !plot.is_obstacle(pos2) && this.tuple_not_on_list(pos2 , visited_list))
 					pos_list.push(pos2)
 			}
 		}
+
+		if(pos_list.length == 0 ) return this.visited_to_positions(visited_list, pos)
+
 		return pos_list
-	},
-	bresenham : function(x0,y0,x1,y1){
-
-		dx = Math.abs(x1-x0)
-		dy = Math.abs(y1-y0)
-
-		sx = (x0 < x1) ? 1 : -1
-		sy = (y0 < y1) ? 1 : -1
-
-		err = dx - dy	
-
-		points = []
-
-		while( x0 != x1 || y0 != y1 ){
-
-			points.push({x:x0,y:y0})
-
-			e2 = 2 * err
-
-			if( e2 > -dy){
-				err -= dy
-				x0 += sx
-			}
-
-			if (e2 < dx) {
-				err += dx
-				y0 += sy
-			}
-		}
-
-		points.push({x:x1,y:y1})
-		points.shift()
-
-		return points
 	},
 	calculate_velocity: function(standar_velocity){
 		return standar_velocity / velocity
+	},
+	distance_two_points: function( point_a , point_b){
+		return Math.sqrt(  Math.pow( (point_b.x - point_a.x) , 2 ) + Math.pow( (point_b.y - point_a.y) , 2 ) )
+	},
+	tuple_not_on_list: function(tuple, lista ){
+		try{
+			if(lista[tuple.y].indexOf(tuple.x) != -1 )
+				return false
+			else
+				return true
+
+		}catch(err){
+			return true		
+		}
+	},
+	add_tuple: function(tuple, lista){
+		try{
+			lista[tuple.y].push(tuple.x)
+		}catch(err){
+			lista[tuple.y] = [tuple.x]
+		}
+
+		return lista
+
+	},
+	visited_to_positions: function(visited_list, pos){
+		positions = []
+
+		for(x=pos.x-1; x<= pos.x + 1 ; x++){
+			for(y=pos.y-1;y<=pos.y + 1 ; y++){
+				pos2 = { x:x, y:y }
+				if( !this.tuple_not_on_list(pos2 , visited_list ) && (x != pos.x || y != pos.y ))
+					positions.push(pos2)
+			}
+		}
+
+		return positions
 	}
 }

@@ -7,7 +7,7 @@ var forest = {
 		height = plot.height / 50
 		this.unit = height * width / 100
 		
-		this.images= ["fire.svg" , "flor.svg" , "flower.svg" , "flowers.png" , "river2.svg" , "river3.svg" , "rock.svg" , "tree.png", "tree.svg" , "tree2.svg" , "tree3.jpg" , "tree4.jpg" , "tree5.svg" , "tree6.svg" , "tree8.svg", "tree9.svg" , "tree10.svg" , "tree11.svg" , "tree12.svg" ,"tree13.svg" , "flor2.svg" , "tree7.svg"],
+		this.images= ["fire.svg" , "flor.svg" , "flower.svg" , "flowers.png" , "river2.svg" , "river3.svg" , "rock.svg" , "tree.png", "tree.svg" , "tree2.svg" , "tree3.jpg" , "tree4.jpg" , "tree5.svg" , "tree6.svg" , "tree8.svg", "tree9.svg" , "tree10.svg" , "tree11.svg" , "tree12.svg" ,"tree13.svg" , "flor2.svg" , "tree7.svg" , "leemon.svg"],
 			
 		this.obstacles = {}
 		this.obstacles_set = paper.set()
@@ -22,11 +22,10 @@ var forest = {
 			forest.obstacles_set.animate({
 				opacity:1
 			}, 500 , ">")
+			
 			if( kibbus.cow ){
 				kibbus.cow.toFront()
-			}
-		} , 100
-		)
+			}} , 100 )
 			
 	},
 	set_forest : function(amount){

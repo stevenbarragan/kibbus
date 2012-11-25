@@ -4,24 +4,12 @@ var kibbus = {
 	cow : false,
 	x:-1,
 	y:-1,
-	last:{
-		x:-1,
-		y:-1,
-		set: function(x , y ){
-			this.x = x
-			this.y = y },
-		compare: function(pos){
-			if(this.x == pos.x && this.y == pos.y)
-				return true
-			return false
-		}
-	},
 	init : function(){
 		
 		var img = this.images[Math.floor( Math.random() * this.images.length )]
 		
 		if( !kibbus.cow ){
-			kibbus.cow = paper.image( "img/" + img , kibbus.x * 50 , kibbus.y * 50, 50 , 50 )   
+			kibbus.cow = paper.image( "img/" + img , kibbus.x * 50 , kibbus.y * 50, 50 , 50 )
 		}
 		
 		kibbus.cow.attr({
@@ -31,16 +19,7 @@ var kibbus = {
 			y : kibbus.y *50
 		}, utils.calculate_velocity(10) , "elasctic").toFront()
 		
-		if( this.visited_list != undefined ){
-			plot.delete_flags()
-		}
-		
-		this.visited_list = []
-		this.visited_list_deleted = 0
 		this.coordenates =[]
-		
-		this.last.x = this.x
-		this.last.y = this.y
 	},
 	spin: function(params){
 		this.cow.animate({
@@ -63,7 +42,7 @@ var kibbus = {
 			opacity : 1
 		}, 20, "bounce")
 	},
-	transtale_slow: function(pos, search_home){
+	translate_slow: function(pos){
 		
 		if( plot.on_house(pos))
 			opacity = 0
@@ -82,107 +61,228 @@ var kibbus = {
 
 			kibbus.x = pos.x
 			kibbus.y = pos.y
-			
-			kibbus.visit(pos)
-			
-			if( search_home ){
-				kibbus.search_home()
-			}else{
-				kibbus.move()
-			}
+		
+			kibbus.move()
+
 		}, utils.calculate_velocity(325) )
 	
 	},
-	move : function(search_home){
+	move : function(){
 		if( this.coordenates.length > 0 ){
 			position = this.coordenates.shift()
 			
 			angle = utils.calculate_angle( this.x, this.y , position.x, position.y)
 			
-			if( !plot.is_obstacle(position) && !this.is_visited(position)){
-				if( this.coordenates.length > 0 && kibbus.last.compare(position)){
-					this.find_another_way()
-				}else{
-					if( angle != this.angle){
-						this.angle = angle
-						this.spin({position:position,search_home:search_home})
-					}else{
-						this.transtale_slow(position,search_home)
-					}
-				}
+			if( angle != this.angle){
+				this.angle = angle
+				this.spin({position:position})
 			}else{
-				this.find_another_way()
+				this.transtale_slow(position)
 			}
 		}
 	},
-	search_home : function(){
-		kibbus.coordenates = utils.bresenham(kibbus.x,kibbus.y,plot.house.attr("x")/50,plot.house.attr("y")/50)
-		kibbus.move();
-	},
-	find_another_way : function(){
-		
-		positions = utils.posibles_movents({x:this.x,y:this.y})
-		
-		if(positions.length > 0 ){
+	bee_init : function(){
+
+		bee_number = 10
+
+		if( typeof this.friends === 'undefined' ){
+			this.friends = []
 			
-			index = Math.floor((Math.random() * positions.length ) )
-			this.coordenates = new Array({ x:positions[index].x, y:positions[index].y })
-			this.move(true)
-		
-		}else{
-			if( !this.last.compare({x:this.x,y:this.y}) && !this.is_visited({x:this.last.x,y:this.last.y})){
-				this.coordenates = [{x:this.last.x , y:this.last.y}]
-				this.move(true)
-			}
-			else{
-				if(this.visited_list.length > 0 && this.visited_list_deleted < 1){
-					plot.delete_flags()
-					this.visited_list_deleted = 1
-					this.find_another_way()
-				}else{
-					this.visited_list_deleted = 0
-					alert("I'm lost =(")
+			for (var i = 0; i < bee_number; i++)
+				this.friends.push( new bee({x:this.x,y:this.y}) )
+		}
+
+		for (i = this.friends.length - 1; i >= 0; i--) {
+			this.friends[i].search_home()
+		}
+
+		this.friends_handler.start(this.friends)
+
+	},
+	friends_handler : {
+		start: function(bees){
+			this.bees = bees
+			this.wait_bees()
+		}
+		,
+		wait_bees : function(){
+			self = this
+			
+			this.alreadyChecked = setInterval( function(){
+				if( self.temperatures_checked() ){
+					self.bees_returned()
 				}
-			}
-		}
-	
-	},
-	visit: function(pos){
-		visited = $.grep( this.visited_list , function( visited ){
-			return visited.x == pos.x && visited.y == pos.y
-		})
-		
-		if( visited.length > 0 ){
+			} , utils.calculate_velocity(100) )
+		},
+		temperatures_checked : function(){
 			
-			visited[0].times++
-			switch(visited[0].times){
-				case 2:
-					visited[0].image.animate({ fill: "#FFFC00" } , 10 )
-					break;
-				case 3:
-					visited[0].image.animate({ fill: "#FF8000" } , 10 )
-					break;
-				case 4:
-					visited[0].image.animate({ fill: "#0DB8AD" } , 10 )
-					break;
-				case 5:
-					visited[0].image.animate({ fill: "#FF0000" } , 10 )
-					break;
-				default:
-					console.log("Error con switch times")
+			for (var i = 0; i < this.bees.length; i++){
+				info = this.bees[0].bee_img.data()
+				
+				if( info.temperature == null)
+					return false
 			}
-		}else{
-			this.add_visited(pos)
+
+			return true
+		},
+		check_temperatures : function(){
+
+			var temperatures = []
+
+			for (index in this.bees ){
+				
+				information = this.bees[index].bee_img.data()
+
+				if(information.temperature == null){
+					this.wait_bees()
+					break;
+				}
+				
+				temperatures.push({
+					position : information.last_position,
+					value : information.temperature
+				})
+
+				information.temperature = null
+			}
+
+			return temperatures
+		},
+		bees_returned: function(){
+			clearInterval(this.alreadyChecked)
+			temperatures = this.check_temperatures()
+
+			if(temperatures.length > 0){
+				best = this.best_temperature(temperatures)
+				this.bee_move(best.position)
+			}
+
 		}
-	},
-	is_visited : function(pos){
-		visited = $.grep( this.visited_list , function( visited ){ return visited.x == pos.x && visited.y == pos.y })
-		return visited.length > 0 && visited[0].times > 4
-	},
-	add_visited: function(pos){
-		this.visited_list.push({ x:pos.x, y:pos.y, times:1,
-			image:paper.circle( ( pos.x * 50) + 25, (pos.y * 50) + 25, 6)
-			.attr({ fill: "#adff2f", opacity : plot.flag_opacity })
-			.toBack() })
+		,best_temperature: function(temperatures){
+
+			var better = temperatures[0]
+
+			for (var i = temperatures.length - 1; i > 0; i--) {
+				if( temperatures[i].value > better.value )
+					better = temperatures[i]
+			}
+
+			return better
+		},
+		bee_move: function(position){
+
+			for (var i = this.bees.length - 1; i >= 0; i--) {
+				this.bees[i].bee_img.data().move(position, 400 , GO_CHECK )
+			}
+
+			this.wait_bees()
+		}
+	}
+}
+
+GO_CHECK = 0
+CHECK = 1
+REPORT = 2
+
+bees = ["bee2.svg"]
+
+function bee(position){
+	if( typeof this.img === 'undefined' ){
+		this.img = 	paper.image( "img/" + bees[0] , position.x * 50, position.y * 50, 50 , 50 ).toBack()
+
+		this.bee_img = $( this.img.node )
+
+		this.bee_img.data("last_position" , position )
+		this.bee_img.data("img" , this.img )
+		this.bee_img.data("visited" , [])
+		this.bee_img.data("angle" , 0)
+		this.bee_img.data("temperature" , null)
+		this.bee_img.data("position" , position)
+
+		this.bee_img.data("spin_translate" , function(agle, position , acction){
+			var self = this
+			
+			this.img.animate({
+				transform : "r" + angle
+			}, utils.calculate_velocity(100) , function(){
+				self.angle = angle
+				self.translate(position , 400 , acction)
+			})
+
+		})
+
+		this.bee_img.data("translate" , function(position, time , acction ){
+			var self = this
+
+			time = utils.calculate_velocity(time)
+
+			this.img.animate({
+				x : position.x * 50,
+				y : position.y * 50 ,
+				transform : "r" + this.angle
+			}, time , function(){
+				self.last_position = self.position
+				self.position = position
+				self.acction(acction)
+			})
+		})
+
+		this.bee_img.data("acction" , function(acction){
+			switch(acction){
+				case GO_CHECK:
+					this.go()
+				break;
+				case CHECK:
+					this.checked = plot.get_temperature(this.position)
+
+					if(utils.tuple_not_on_list(this.position , this.visited)){
+						this.checked -= 1
+						plot.freeze(position, this.checked )
+					}else{
+						this.visited = utils.add_tuple( this.position , this.visited)
+					}
+
+					this.go_back()
+
+					break;
+				case REPORT:
+
+					this.temperature = this.checked
+
+					break;
+
+			}
+		})
+
+		this.bee_img.data("move" , function(position , time , acction ){
+			
+			angle = utils.calculate_angle(this.img.attr("x") / 50  , this.img.attr("y") / 50 , position.x , position.y )
+
+			if (angle != this.angle )
+				this.spin_translate( angle , position , acction)
+			else
+				this.translate(position , time , acction )
+
+		})
+
+		this.bee_img.data("go_back" , function(){
+			this.move( this.last_position , 400 , REPORT)
+		})
+
+		this.bee_img.data("go" , function(){
+			positions = utils.posibles_movents({ x : this.img.attr("x")/50, y: this.img.attr("y")/50 } , this.visited )
+			
+			if(positions.length > 0 ){
+				index = Math.floor((Math.random() * positions.length ) )
+				this.move(positions[index], 400 , CHECK )
+			}
+		})
+
+	}
+}
+
+bee.prototype = {
+	search_home: function(){
+		this.bee_img.data().go()
 	}
 }
