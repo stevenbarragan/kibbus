@@ -144,15 +144,15 @@ var plot = {
 		var frozen_item = this.search_frozen(position)
 
 		if(frozen_item)
-			return frozen_item.temperature
+			return this.frozen[frozen_item].value 
 
 		return -utils.distance_two_points(position , {x : this.house.attr("x") / 50 , y:this.house.attr("y") / 50 })
 	},
 	frozen : [],
 	search_frozen : function(position){
 		for (var i = this.frozen.length - 1; i >= 0; i--) {
-			if(this.frozen[i].x == position.x && this.frozen[0].y == position.y){
-				return this.frozen[i]
+			if(this.frozen[i].x == position.x && this.frozen[i].y == position.y){
+				return i
 			}
 		}
 		return false
@@ -162,9 +162,8 @@ var plot = {
 		var frozen_item = this.search_frozen(position)
 
 		if(frozen_item)
-			frozen_item.temperature = temperature
+			this.frozen[frozen_item].value = temperature
 		else
 			this.frozen.push({x:position.x, y: position.y , value: temperature})
-
 	}
 }

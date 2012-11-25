@@ -83,7 +83,7 @@ var kibbus = {
 	},
 	bee_init : function(){
 
-		bee_number = 10
+		bee_number = 5
 
 		if( typeof this.friends === 'undefined' ){
 			this.friends = []
@@ -235,9 +235,11 @@ function bee(position){
 				case CHECK:
 					this.checked = plot.get_temperature(this.position)
 
-					if(utils.tuple_not_on_list(this.position , this.visited)){
+					if(!utils.tuple_not_on_list(this.position , this.visited)){
 						this.checked -= 1
-						plot.freeze(position, this.checked )
+						plot.freeze(this.position, this.checked )
+
+						console.log(plot.frozen)
 					}else{
 						this.visited = utils.add_tuple( this.position , this.visited)
 					}
