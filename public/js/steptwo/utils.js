@@ -52,15 +52,30 @@ utils = {
 		return sum
 	},
 	posibles_movents : function(pos){
-		pos_list = []
+		var pos_list = []
+		var pos_list2 = []
 		
 		for(x=pos.x-1; x<= pos.x + 1 ; x++){
 			for(y=pos.y-1;y<=pos.y + 1 ; y++){
 				pos2 = { x:x, y:y }
-				if( plot.valid_position(pos2) && (x != pos.x || y != pos.y ) && !plot.is_obstacle(pos2) && !kibbus.is_visited(pos2) && !kibbus.last.compare(pos2))
-					pos_list.push(pos2)
+				
+				if( plot.valid_position(pos2) && (x != pos.x || y != pos.y ) && !plot.is_obstacle(pos2) && !kibbus.last.compare(pos2)){
+
+					if( !kibbus.is_visited_any(pos2) ){
+					
+						pos_list2.push(pos2)
+						pos_list.push(pos2)
+					
+					}else if( !kibbus.is_visited(pos2) )
+							pos_list.push(pos2)
+				}
+
 			}
 		}
+
+		if( pos_list2.length > 0)
+			return pos_list2
+
 		return pos_list
 	},
 	bresenham : function(x0,y0,x1,y1){

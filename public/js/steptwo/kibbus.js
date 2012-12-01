@@ -49,7 +49,7 @@ var kibbus = {
 		}, utils.calculate_velocity(125) , ">" , function(){
 			if(params){
 				setTimeout(function(){
-					kibbus.transtale_slow(params.position, params.search_home)
+					kibbus.transtale_slow(params.position, params.search_home , params.check)
 				} , utils.calculate_velocity(10) )
 			}
 		});
@@ -63,7 +63,7 @@ var kibbus = {
 			opacity : 1
 		}, 20, "bounce")
 	},
-	transtale_slow: function(pos, search_home){
+	transtale_slow: function(pos, search_home, check){
 		
 		if( plot.on_house(pos))
 			opacity = 0
@@ -88,27 +88,39 @@ var kibbus = {
 			if( search_home ){
 				kibbus.search_home()
 			}else{
-				kibbus.move()
+				kibbus.move(false,check)
 			}
 		}, utils.calculate_velocity(325) )
 	
 	},
-	move : function(search_home){
+	move : function(search_home, check){
+
+		if( typeof check === "undefined") check = false
+
 		if( this.coordenates.length > 0 ){
 			position = this.coordenates.shift()
 			
 			angle = utils.calculate_angle( this.x, this.y , position.x, position.y)
 			
-			if( !plot.is_obstacle(position) && !this.is_visited(position)){
-				if( this.coordenates.length > 0 && kibbus.last.compare(position)){
-					this.find_another_way()
-				}else{
-					if( angle != this.angle){
-						this.angle = angle
-						this.spin({position:position,search_home:search_home})
+			if( !plot.is_obstacle(position) ){
+				if (!check || !this.is_visited_any(position)){
+					
+					if( this.coordenates.length > 0 && kibbus.last.compare(position)){
+						this.find_another_way()
 					}else{
-						this.transtale_slow(position,search_home)
+						if( angle != this.angle){
+							this.angle = angle
+							this.spin({
+								position:position,
+								search_home:search_home,
+								check:check
+							})
+						}else{
+							this.transtale_slow(position,search_home, check )
+						}
 					}
+				}else{
+					this.find_another_way()
 				}
 			}else{
 				this.find_another_way()
@@ -116,8 +128,8 @@ var kibbus = {
 		}
 	},
 	search_home : function(){
-		kibbus.coordenates = utils.bresenham(kibbus.x,kibbus.y,plot.house.attr("x")/50,plot.house.attr("y")/50)
-		kibbus.move();
+		this.coordenates = utils.bresenham(kibbus.x,kibbus.y,plot.house.attr("x")/50,plot.house.attr("y")/50)
+		this.move(false, true);
 	},
 	find_another_way : function(){
 		
@@ -126,7 +138,7 @@ var kibbus = {
 		if(positions.length > 0 ){
 			
 			index = Math.floor((Math.random() * positions.length ) )
-			this.coordenates = new Array({ x:positions[index].x, y:positions[index].y })
+			this.coordenates = [{ x:positions[index].x, y:positions[index].y }]
 			this.move(true)
 		
 		}else{
@@ -178,6 +190,10 @@ var kibbus = {
 	is_visited : function(pos){
 		visited = $.grep( this.visited_list , function( visited ){ return visited.x == pos.x && visited.y == pos.y })
 		return visited.length > 0 && visited[0].times > 4
+	},
+	is_visited_any : function(pos){
+		visited = $.grep( this.visited_list , function( visited ){ return visited.x == pos.x && visited.y == pos.y })
+		return visited.length > 0
 	},
 	add_visited: function(pos){
 		this.visited_list.push({ x:pos.x, y:pos.y, times:1,
