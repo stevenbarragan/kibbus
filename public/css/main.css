@@ -58,3 +58,6 @@ footer{
 #slider-vertical-velocity{
 	/*margin: 0 auto;*/
 }
+.cacheload{
+	display: none;
+}

@@ -125,45 +125,82 @@ var plot = {
 			pos.x = Math.floor(( position.pageX - this.offsetLeft ) / 50)
 			pos.y = Math.floor(( position.pageY - this.offsetTop ) / 50)
 			
-			if( !plot.is_obstacle(pos)){
-				kibbus.translate_fast(pos)
-			}
+			if( !plot.is_obstacle(pos)) kibbus.translate_fast(pos)
+
 		})
 		
 		this.canvas.click(function(param){
 			plot.canvas.unbind("mousemove")
 			plot.canvas.unbind("click")
-			
-			kibbus.x = Math.floor( kibbus.cow.attr("x") / 50  )
-			kibbus.y = Math.floor( kibbus.cow.attr("y")  / 50 )
 
+			var x = Math.floor(kibbus.cow.attr("x") / 50)
+			var y = Math.floor(kibbus.cow.attr("y") / 50)
+			
+			kibbus.x = x
+			kibbus.y = y
+
+			if( typeof kibbus.friends !== 'undefined' ){
+				for (var i = 0; i < kibbus.friends.length; i++)
+					kibbus.friends[i].bee_img.remove()
+
+				delete kibbus.friends
+
+				for (var i = plot.frozen.length - 1; i >= 0; i--)
+					plot.frozen[i].img.remove()
+
+				this.frozen = []
+			}
 		})
 	},
 	get_temperature: function(position){
 
 		var frozen_item = this.search_frozen(position)
 
-		if(frozen_item)
-			return this.frozen[frozen_item].value 
+		if(frozen_item) return this.frozen[frozen_item].value
 
 		return -utils.distance_two_points(position , {x : this.house.attr("x") / 50 , y:this.house.attr("y") / 50 })
 	},
 	frozen : [],
+	frozen_state : false,
 	search_frozen : function(position){
-		for (var i = this.frozen.length - 1; i >= 0; i--) {
-			if(this.frozen[i].x == position.x && this.frozen[i].y == position.y){
+
+		for (var i = this.frozen.length - 1; i >= 0; i--)
+			if(this.frozen[i].x == position.x && this.frozen[i].y == position.y)
 				return i
-			}
-		}
+
 		return false
 	},
 	freeze : function(position , temperature){
 
 		var frozen_item = this.search_frozen(position)
 
-		if(frozen_item)
+		if(frozen_item){
 			this.frozen[frozen_item].value = temperature
+			this.frozen[frozen_item].img.attr('text', temperature.toFixed(2))
+		}else{
+
+			img = paper.text(position.x * 50 + 25 , position.y * 50 + 25, temperature.toFixed(2) )
+
+			if(!this.frozen_state) img.attr({opacity:0})
+
+			this.frozen.push({
+				x:position.x,
+				y: position.y,
+				value: temperature,
+				img: img
+			})
+		}
+	},
+	show_freezes : function(){
+
+		this.frozen_state = !this.frozen_state
+
+		if(this.frozen_state)
+			for (var i = this.frozen.length - 1; i >= 0; i--)
+				this.frozen[i].img.animate({opacity:1},500)
 		else
-			this.frozen.push({x:position.x, y: position.y , value: temperature})
+			for (var i = this.frozen.length - 1; i >= 0; i--)
+				this.frozen[i].img.animate({opacity:0},500)
+
 	}
 }

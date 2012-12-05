@@ -18,6 +18,35 @@
 		<![endif]-->
 	</head>
 	<body>
+		<div class="cacheload">
+			<object data="img/bee2.svg" type="image/svg+xml"></object>
+			<object data="img/house.svg" type="image/svg+xml"></object>
+			<object data="img/blue-cow.svg" type="image/svg+xml"></object>
+			<object data="img/green-cow.svg" type="image/svg+xml"></object>
+			<object data="img/cow.svg" type="image/svg+xml"></object>
+			<object data="img/forest/leemon.svg" type="image/svg+xml"></object>
+			<object data="img/forest/fire.svg" type="image/svg+xml"></object>
+			<object data="img/forest/flor.svg" type="image/svg+xml"></object>
+			<object data="img/forest/flor2.svg" type="image/svg+xml"></object>
+			<object data="img/forest/flower.svg" type="image/svg+xml"></object>
+			<object data="img/forest/flowers.svg" type="image/svg+xml"></object>
+			<object data="img/forest/river2.svg" type="image/svg+xml"></object>
+			<object data="img/forest/river3.svg" type="image/svg+xml"></object>
+			<object data="img/forest/rock.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree.png" type="image"></object>
+			<object data="img/forest/tree.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree2.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree3.jpg" type="image"></object>
+			<object data="img/forest/tree5.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree6.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree7.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree8.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree9.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree10.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree11.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree12.svg" type="image/svg+xml"></object>
+			<object data="img/forest/tree13.svg" type="image/svg+xml"></object>
+		</div>
 		<?php
 		switch ($_GET["step"]){
 			case "one":

@@ -41,7 +41,7 @@ $(document).ready(function(){
 
 	$("#go_home").click(function(){ kibbus.bee_init() })
 
-	$("#show_flags").click(function(){plot.show_flags()})
+	$("#show_frozed").click(function(){plot.show_freezes()})
 
 	$("#add-remove").click(function(){
 		forest.add_remove()
