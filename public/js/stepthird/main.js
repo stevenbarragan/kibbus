@@ -22,7 +22,7 @@ $(document).ready(function(){
 
 	$( "#slider-vertical-velocity" ).slider({
 		range: "min",
-		max: 2.5,
+		max: 5.5,
 		min: 0.5,
 		value: 1,
 		step: 0.5,

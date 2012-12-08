@@ -22,7 +22,7 @@ $(document).ready(function(){
 
 	$( "#slider-vertical-velocity" ).slider({
 		range: "min",
-		max: 2.5,
+		max: 7.5,
 		min: 0.5,
 		value: 1,
 		step: 0.5,
@@ -39,14 +39,19 @@ $(document).ready(function(){
 
 	$("#set_kibbus").click(function(){ plot.set_kibbus()})
 
-	$("#go_home").click(function(){ kibbus.start()})
+	$("#go_home").click(function(){ kibbus.start() })
 
-	$("#show_flags").click(function(){plot.show_flags()})
+	$("#show_frozed").click(function(){plot.show_freezes()})
 
 	$("#add-remove").click(function(){
-		// $(this).button('toggle')
 		forest.add_remove()
 	})
+
+	$("#test").click(function(){
+		$(kibbus.friends[0].img.node).data().move( {x:3 , y:3} , 500 )
+	})
+
+
 	
 	$("#instruction").popover({
 		title : "What to do?",

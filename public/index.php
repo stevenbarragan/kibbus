@@ -18,44 +18,17 @@
 		<![endif]-->
 	</head>
 	<body>
-		<div class="cacheload">
-			<object data="img/bee2.svg" type="image/svg+xml"></object>
-			<object data="img/house.svg" type="image/svg+xml"></object>
-			<object data="img/blue-cow.svg" type="image/svg+xml"></object>
-			<object data="img/green-cow.svg" type="image/svg+xml"></object>
-			<object data="img/cow.svg" type="image/svg+xml"></object>
-			<object data="img/forest/leemon.svg" type="image/svg+xml"></object>
-			<object data="img/forest/fire.svg" type="image/svg+xml"></object>
-			<object data="img/forest/flor.svg" type="image/svg+xml"></object>
-			<object data="img/forest/flor2.svg" type="image/svg+xml"></object>
-			<object data="img/forest/flower.svg" type="image/svg+xml"></object>
-			<object data="img/forest/flowers.svg" type="image/svg+xml"></object>
-			<object data="img/forest/river2.svg" type="image/svg+xml"></object>
-			<object data="img/forest/river3.svg" type="image/svg+xml"></object>
-			<object data="img/forest/rock.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree.png" type="image"></object>
-			<object data="img/forest/tree.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree2.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree3.jpg" type="image"></object>
-			<object data="img/forest/tree5.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree6.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree7.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree8.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree9.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree10.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree11.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree12.svg" type="image/svg+xml"></object>
-			<object data="img/forest/tree13.svg" type="image/svg+xml"></object>
-		</div>
+		<div class="cacheload"><object data="img/bee2.svg" type="image/svg+xml"></object><object data="img/house.svg" type="image/svg+xml"></object><object data="img/blue-cow.svg" type="image/svg+xml"></object><object data="img/green-cow.svg" type="image/svg+xml"></object><object data="img/cow.svg" type="image/svg+xml"></object><object data="img/forest/leemon.svg" type="image/svg+xml"></object><object data="img/forest/fire.svg" type="image/svg+xml"></object><object data="img/forest/flor.svg" type="image/svg+xml"></object><object data="img/forest/flor2.svg" type="image/svg+xml"></object><object data="img/forest/flower.svg" type="image/svg+xml"></object><object data="img/forest/flowers.svg" type="image/svg+xml"></object><object data="img/forest/river2.svg" type="image/svg+xml"></object><object data="img/forest/river3.svg" type="image/svg+xml"></object><object data="img/forest/rock.svg" type="image/svg+xml"></object><object data="img/forest/tree.png" type="image"></object><object data="img/forest/tree.svg" type="image/svg+xml"></object><object data="img/forest/tree2.svg" type="image/svg+xml"></object><object data="img/forest/tree3.jpg" type="image"></object><object data="img/forest/tree5.svg" type="image/svg+xml"></object><object data="img/forest/tree6.svg" type="image/svg+xml"></object><object data="img/forest/tree7.svg" type="image/svg+xml"></object><object data="img/forest/tree8.svg" type="image/svg+xml"></object><object data="img/forest/tree9.svg" type="image/svg+xml"></object><object data="img/forest/tree10.svg" type="image/svg+xml"></object><object data="img/forest/tree11.svg" type="image/svg+xml"></object><object data="img/forest/tree12.svg" type="image/svg+xml"></object><object data="img/forest/tree13.svg" type="image/svg+xml"></object></div>
 		<?php
 		switch ($_GET["step"]){
 			case "one":
 			case "two":
 			case "third":
+			case "fourth":
 				$step = $_GET["step"];
 				break;
 			default :
-				$step = "third";
+				$step = "fourth";
 		}?>
 		<!--[if lt IE 7]>
 			<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
@@ -75,9 +48,10 @@
 							<li class=""><a href="#" id="why">Why</a></li>
 						</ul>
 						<select id="select_step">
-							<option value="one" <?php echo $step == "one" ? 'selected' : '' ?>>Step first</option>
-							<option value="two" <?php echo $step == "two" ? 'selected' : '' ?>>Step second</option>
-							<option value="third" <?php echo $step == "third" ? 'selected' : '' ?>>Step third</option>
+							<option value="one" <?php echo $step == "one" ? 'selected' : '' ?>>Frst step</option>
+							<option value="two" <?php echo $step == "two" ? 'selected' : '' ?>>Second step</option>
+							<option value="third" <?php echo $step == "third" ? 'selected' : '' ?>>Third step</option>
+							<option value="third" <?php echo $step == "fourth" ? 'selected' : '' ?>>Step fourth</option>
 						</select>
 					</div><!--/.nav-collapse -->
 				</div>
@@ -90,9 +64,7 @@
 			</div>
 		</div>
 		<footer>
-			<p>Steven&copy; Company 2012<br />
-				<a href="mailto:me@steven.mx">me@steven.mx</a> | <a href="https://twitter.com/steven_barragan">@steven_barragan</a>
-			</p>
+			<p>Steven&copy; Company 2012<br /><a href="mailto:me@steven.mx">me@steven.mx</a> | <a href="https://twitter.com/steven_barragan">@steven_barragan</a></p>
 		</footer>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="js/vendor/jquery.js"><\/script>')</script>
