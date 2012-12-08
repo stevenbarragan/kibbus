@@ -153,12 +153,79 @@ var plot = {
 		})
 	},
 	generate_nodes : function(){
-		this.nodes = []
+		// this.nodes = []
+
+		// var limit_x = this.width / 50
+		// var limit_y = this.height / 50
+
+		// for( var x = 0 ; x < limit_x ; x++ ){
+		// 	this.nodes[x] = []
+			
+		// 	for( var y = 0 ; y < limit_y ; y++ )
+		// 		this.nodes[x][y] = new node( x , y)
+		// }
+
+	},
+	tree : {
+		init : function(position){
+			this.nodes = []
+			this.raiz = this.find_create_node(position)
+
+			return this.raiz
+		},
+		recalculate_costs : function(positions){
+			var cost_value = positions.length
+			var node = this.raiz
+
+			var way
+
+			while(positions.length>0){
+				position = positions.shift()
+
+				way = this.get_position_way( node.ways, position )
+
+				// if(!way){
+				// 	way = node.ways.push(new cost(position))
+				// }
+
+				way.value += cost_value
+
+				node = way.node
+
+			}
+
+			console.log(this.raiz)
+		},
+		get_position_way: function(costs, position){
+			
+			for (var i = costs.length - 1; i >= 0; i--)
+				if( costs[i].node.position.x == position.x && costs[i].node.position.y == position.y )
+					return costs[i]
+
+			costs.push(new cost(position))
+
+			return costs[costs.length-1]
+		},
+		find_create_node : function(position){
+			try{
+				var node_tentative = this.nodes[position.x][position.y]
+				if(node_tentative !== undefined)
+					return node_tentative
+			}catch(err){}
+			
+			this.nodes[position.x] = []
+			return this.nodes[position.x][position.y] = new node( position.x, position.y)
+		}
 	}
 }
 
 
 function node(x, y){
-	this.position = {x,y}
+	this.position = {x:x,y:y}
 	this.ways = []
+}
+
+function cost(position){
+	this.value = 0
+	this.node = plot.tree.find_create_node(position)
 }

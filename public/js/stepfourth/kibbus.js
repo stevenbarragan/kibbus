@@ -19,6 +19,7 @@ var kibbus = {
 		
 		this.coordenates = []
 		this.last_position = {x:kibbus.x,y:kibbus.y}
+		this.way = []
 	},
 	spin: function(position){
 		this.cow.animate({
@@ -58,6 +59,8 @@ var kibbus = {
 			self.x = pos.x
 			self.y = pos.y
 
+			self.way.push(pos)
+
 			self.next_position()
 		})
 	
@@ -92,31 +95,14 @@ var kibbus = {
 				this.coordenates.push( position )
 				this.move()
 			}
+		}else{
+			plot.tree.recalculate_costs(this.way)
 		}
 	},
 	start : function(){
 
+		this.node = plot.tree.init({x:this.x,y:this.y})
+
 		this.next_position()
-
-		// var position = {x:this.x,y:this.y}
-		// // var last_position = position
-
-		// // do{
-		// 	positions = utils.posibles_movents(position, this.last_position)
-
-		// 	if(positions.length > 0 ){
-
-		// 		index = Math.floor((Math.random() * positions.length ) )
-
-		// 		last_position = position
-
-		// 		position = { x:positions[index].x, y:positions[index].y }
-
-		// 		this.coordenates.push( position )
-
-		// 		this.move()
-		// 	}
-
-		// // }while(!plot.on_house(position))
 	}
 }
