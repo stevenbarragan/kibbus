@@ -133,68 +133,34 @@ var plot = {
 			plot.canvas.unbind("mousemove")
 			plot.canvas.unbind("click")
 
-			var x = Math.floor(kibbus.cow.attr("x") / 50)
-			var y = Math.floor(kibbus.cow.attr("y") / 50)
-			
-			kibbus.x = x
-			kibbus.y = y
+			kibbus.x = Math.floor(kibbus.cow.attr("x") / 50)
+			kibbus.y = Math.floor(kibbus.cow.attr("y") / 50)
 
-			if( typeof kibbus.friends !== 'undefined' ){
-				for (var i = 0; i < kibbus.friends.length; i++)
-					kibbus.friends[i].bee_img.remove()
-
-				delete kibbus.friends
-
-				for (var i = plot.frozen.length - 1; i >= 0; i--)
-					plot.frozen[i].img.remove()
-
-				this.frozen = []
-			}
+			plot.tree.init({x:kibbus.x,y:kibbus.y})
 		})
-	},
-	generate_nodes : function(){
-		// this.nodes = []
-
-		// var limit_x = this.width / 50
-		// var limit_y = this.height / 50
-
-		// for( var x = 0 ; x < limit_x ; x++ ){
-		// 	this.nodes[x] = []
-			
-		// 	for( var y = 0 ; y < limit_y ; y++ )
-		// 		this.nodes[x][y] = new node( x , y)
-		// }
-
 	},
 	tree : {
 		init : function(position){
 			this.nodes = []
 			this.raiz = this.find_create_node(position)
-
-			return this.raiz
 		},
 		recalculate_costs : function(positions){
-			var cost_value = positions.length
-			var node = this.raiz
+			this.positions = positions
 
+			var cost_value = this.positions.length
+			var node = this.raiz
 			var way
 
-			while(positions.length>0){
-				position = positions.shift()
+			while(this.positions.length>0){
+				position = this.positions.shift()
 
 				way = this.get_position_way( node.ways, position )
-
-				// if(!way){
-				// 	way = node.ways.push(new cost(position))
-				// }
-
 				way.value += cost_value
-
 				node = way.node
-
 			}
 
-			console.log(this.raiz)
+			kibbus.start({x:this.raiz.position.x,y:this.raiz.position.y})
+
 		},
 		get_position_way: function(costs, position){
 			

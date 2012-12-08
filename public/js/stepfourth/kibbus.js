@@ -99,10 +99,24 @@ var kibbus = {
 			plot.tree.recalculate_costs(this.way)
 		}
 	},
-	start : function(){
-
-		this.node = plot.tree.init({x:this.x,y:this.y})
+	start : function(position){
+		
+		if(position !== undefined )
+			this.init_from_position(position)
 
 		this.next_position()
+	},
+	init_from_position : function(position){
+		this.x = position.x
+		this.y = position.y
+
+		this.coordenates = []
+		this.last_position = position
+		this.way = []
+
+		this.cow.attr({
+			x:position.x * 50,
+			y:position.y * 50
+		})
 	}
 }
