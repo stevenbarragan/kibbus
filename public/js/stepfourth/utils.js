@@ -123,6 +123,12 @@ utils = {
 		if(!found)
 			list.push(node)
 
+	},in_list : function(list , element ){
+		var found = $.grep(list , function(item , i ){ return element == item })
+		if(found.length > 0)
+			return true
+		return false
+
 	},
 	dijkstra:{
 		init: function(){

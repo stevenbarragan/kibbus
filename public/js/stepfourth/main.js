@@ -42,16 +42,23 @@ $(document).ready(function(){
 	$("#go_home").click(function(){ kibbus.start() })
 
 	$("#stop").click(function(){ kibbus.stop() })
+	
+	$("#test").click(function(){
+		// var worker = new Worker('/js/stepfourth/task.js');
+		// worker.postMessage();
+
+		// worker.addEventListener('message', function(e) {
+		//   console.log('Worker said: ', e.data);
+		// }, false);
+
+		// plot.worker.postMessage({uno:"unoasdfasdf"}); // Send data to our worker.
+
+		plot.tree.find_way_start(raiz_position)
+	})
 
 	$("#add-remove").click(function(){
 		forest.add_remove()
 	})
-
-	$("#test").click(function(){
-		$(kibbus.friends[0].img.node).data().move( {x:3 , y:3} , 500 )
-	})
-
-
 	
 	$("#instruction").popover({
 		title : "What to do?",
