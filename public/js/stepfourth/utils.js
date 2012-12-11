@@ -51,20 +51,25 @@ utils = {
 		})
 		return sum
 	},
-	posibles_movents : function(pos, last_position){
+	posibles_movents : function(pos, visited_list){
 		pos_list = []
 		
 		for(x=pos.x-1; x<= pos.x + 1 ; x++)
 			for(y=pos.y-1;y<=pos.y + 1 ; y++){
 				pos2 = { x:x, y:y }
-				if( plot.valid_position(pos2) && this.diferent_position(pos2, pos) && !plot.is_obstacle(pos2) && this.diferent_position(pos2, last_position))
+				if( plot.valid_position(pos2) && this.diferent_position(pos2, pos) && !plot.is_obstacle(pos2) && !this.position_on_list(pos2, visited_list))
 					pos_list.push(pos2)
 			}
 
-		if(pos_list.length == 0 )
-			return [last_position]
+		if(pos_list.length == 0 ) return this.visited_to_positions(visited_list, pos)
 
 		return pos_list
+	},
+	position_on_list : function(position, list){
+		var found = $.grep(list , function(item , i ){ return position.x == item.x && position.y == item.y })
+		if(found.length>0)
+			return true
+		return false
 	},
 	diferent_position : function(position1, position2){
 		return position1.x != position2.x || position1.y != position2.y
@@ -99,11 +104,49 @@ utils = {
 		for(x=pos.x-1; x<= pos.x + 1 ; x++){
 			for(y=pos.y-1;y<=pos.y + 1 ; y++){
 				pos2 = { x:x, y:y }
-				if( !this.tuple_not_on_list(pos2 , visited_list ) && (x != pos.x || y != pos.y ))
+				if( this.position_on_list(pos2 , visited_list ) && (x != pos.x || y != pos.y ))
 					positions.push(pos2)
 			}
 		}
 
 		return positions
+	},
+	add_to_list : function(list , node){
+		found = false
+
+		for (var i = list.length - 1; i >= 0; i--)
+			if( list[i].position == node.position ){
+				found = true
+				break
+			}
+
+		if(!found)
+			list.push(node)
+
+	},
+	dijkstra:{
+		init: function(){
+			this.nodes_to_array()
+
+		},
+		nodes_to_array : function(){
+			this.nodes = []
+			this.distancia = []
+			for (var x = plot.tree.nodes.length - 1; x >= 0; x--)
+				for (var y = plot.tree.nodes[i].length - 1; y >= 0; y--){
+					if( plot.tree.nodes[x][y] == plot.tree.raiz )
+						this.raiz = this.nodes.length
+					
+					plot.tree.nodes[x][y].id = this.nodes.length
+
+					this.nodes.push({
+						node : plot.tree.nodes[x][y],
+						dis : -1,
+						visitado : false,
+						previo : -1
+					})
+				}
+		}
 	}
 }
+

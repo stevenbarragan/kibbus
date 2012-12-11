@@ -16,7 +16,7 @@ var forest = {
 			this.obstacles[i] = new Array()
 		}
 		
-		this.set_forest(30)
+		this.set_forest(50)
 		
 		setTimeout(function(){
 			forest.obstacles_set.animate({

@@ -106,6 +106,14 @@ var plot = {
 	on_house: function(position){
 		return this.house && position.x * 50 == this.house.attr("x") &&  position.y * 50 == this.house.attr("y")
 	},
+	position_on_house : function(positions){
+		for (var i = positions.length - 1; i >= 0; i--) {
+			if(this.on_house( positions[i] ) )
+				return positions[i]
+		}
+
+		return false
+	},
 	on_kibbus : function(position){
 		return kibbus.x == position.x && kibbus.y == position.y
 	},
@@ -142,22 +150,39 @@ var plot = {
 	tree : {
 		init : function(position){
 			this.nodes = []
-			this.raiz = this.find_create_node(position)
+			// this.raiz = this.find_create_node(position)
+			this.raiz = new node( position.x, position.y)
 		},
 		recalculate_costs : function(positions){
 			this.positions = positions
 
-			var cost_value = this.positions.length
 			var node = this.raiz
 			var way
 
-			while(this.positions.length>0){
+			if(this.min === undefined )
+				this.min = this.max = positions.length
+
+			media = ( this.min + this.max ) / 2
+
+			var cost_value = Math.abs( media - positions.length )
+
+			if(positions.length < media)
+				cost_value = -cost_value
+
+			console.log(this.raiz.position)
+
+			while(this.positions.length > 0){
 				position = this.positions.shift()
 
 				way = this.get_position_way( node.ways, position )
 				way.value += cost_value
 				node = way.node
 			}
+
+			if(positions.length > this.max )
+				this.max = positions.length
+			else if(position.length < this.min )
+				this.min = position.length
 
 			kibbus.start({x:this.raiz.position.x,y:this.raiz.position.y})
 
@@ -173,14 +198,142 @@ var plot = {
 			return costs[costs.length-1]
 		},
 		find_create_node : function(position){
-			try{
-				var node_tentative = this.nodes[position.x][position.y]
-				if(node_tentative !== undefined)
-					return node_tentative
-			}catch(err){}
-			
-			this.nodes[position.x] = []
-			return this.nodes[position.x][position.y] = new node( position.x, position.y)
+
+			var visited = []
+			var check
+			this.to_visit = [this.raiz]
+
+			while(this.to_visit.length > 0 ){
+
+				check = this.to_visit.shift()
+
+				found = $.grep(visited , function(element , i ){ return element == check })
+
+				if(!this.in_list(visited , check)){
+
+					visited.push(check)
+
+					if(check.position.x == position.x && check.position.y == position.y)
+						return check
+
+					this.add_array_to_visit(check.ways)
+				}
+			}
+
+			return new node( position.x, position.y)
+
+		},
+		add_array_to_visit : function(positions){
+
+			for (var i = positions.length - 1; i >= 0; i--)
+				utils.add_to_list( this.to_visit , positions[i].node )
+
+		},
+		get_better_way : function(position){
+			var node = this.find_create_node(position)
+			var ways = node.ways
+			var coordenates = []
+			var cost
+			var visited = []
+
+			while(ways.length > 0){
+
+				start = 0
+				
+				while(start < ways.length && this.in_list(visited , ways[start].node ))
+					start++
+
+				if(start == ways.length){
+					alert("error")
+					ways = []
+
+				}else{
+
+					cost = ways[start]
+					visited.push(cost.node)
+
+					for (var i = ways.length - 1; i > start; i--) {
+						if( !this.in_list(visited , ways[i] )){
+							
+							visited.push(ways[i])
+
+							if(ways[i].value < cost.value){
+								cost = ways[i]
+							}
+						}
+					}
+
+					coordenates.push(cost.node.position)
+
+					ways = cost.node.ways
+				}
+			}
+
+			return coordenates
+		},
+		in_list : function(list , element ){
+
+			var found = $.grep(list , function(item , i ){ return element == item })
+
+			if(found.length > 0)
+				return true
+
+			return false
+
+		},
+		find_way_start: function(element){
+			this.ways = []
+			var house_position = {x:plot.house.attr("x") / 50,y:plot.house.attr("y") / 50}
+			var node = this.find_create_node(element)
+
+			this.find_way( [] , house_position , node )
+			return this.ways
+		},
+		find_way : function(list , house_position , nodo){
+			list.push(nodo.position)
+
+			if( this.same_positions(house_position , nodo.position )){
+				this.ways = list
+				return true
+			}
+
+			child = this.sort_ways(nodo.ways)
+
+			for (var i = child.length - 1; i >= 0; i--) {
+				if( !this.in_list( list , child[i].node )){
+					if(this.find_way(list , house_position ,child[i].node ))
+						return true
+				}
+			}
+
+			return false
+
+		},
+		sort_ways : function(costs){
+			var ways = costs.slice(0)
+			list = []
+
+			total = ways.length
+
+			while(list.length != total){
+				candidate = 0
+
+				mayor = ways[candidate]
+
+				for (var i = candidate + 1; i < ways.length; i++) {
+					if(ways[i].value > ways[candidate].value )
+						candidate = i
+				}
+
+				list.push(ways[candidate])
+				ways.splice(candidate , 1)
+			}
+
+			return list
+
+		},
+		same_positions : function(pos1 , pos2){
+			return pos1.x == pos2.x && pos1.y == pos2.y
 		}
 	}
 }
@@ -192,6 +345,6 @@ function node(x, y){
 }
 
 function cost(position){
-	this.value = 0
+	this.value = 1000000
 	this.node = plot.tree.find_create_node(position)
 }

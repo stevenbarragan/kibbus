@@ -9,7 +9,7 @@ $(document).ready(function(){
 		range: "min",
 		min: 0,
 		max: 100,
-		value: 30,
+		value: 50,
 		slide: function( event, ui ) {
 			if(!forest.forest_working){
 				forest.set_forest(ui.value)
@@ -22,7 +22,7 @@ $(document).ready(function(){
 
 	$( "#slider-vertical-velocity" ).slider({
 		range: "min",
-		max: 7.5,
+		max: 500,
 		min: 0.5,
 		value: 1,
 		step: 0.5,
@@ -41,7 +41,7 @@ $(document).ready(function(){
 
 	$("#go_home").click(function(){ kibbus.start() })
 
-	$("#show_frozed").click(function(){plot.show_freezes()})
+	$("#stop").click(function(){ kibbus.stop() })
 
 	$("#add-remove").click(function(){
 		forest.add_remove()

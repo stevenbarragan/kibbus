@@ -81,30 +81,41 @@ var kibbus = {
 	},
 	next_position: function(){
 
-		var position = {x:this.x,y:this.y}
+		if(this.continue){
 
-		if( !plot.on_house(position)){
+			var position = {x:this.x,y:this.y}
 
-			positions = utils.posibles_movents(position, this.last_position)
+			if( !plot.on_house(position)){
 
-			if(positions.length > 0 ){
+				positions = utils.posibles_movents(position, this.way)
 
-				index = Math.floor((Math.random() * positions.length ) )
-				position = { x:positions[index].x, y:positions[index].y }
+				if(positions.length > 0 ){
 
-				this.coordenates.push( position )
-				this.move()
+					position = plot.position_on_house(positions)
+
+					if(!position){
+						index = Math.floor((Math.random() * positions.length ) )
+						position = { x:positions[index].x, y:positions[index].y }
+					}
+
+					this.coordenates.push( position )
+					this.move()
+				}
+			}else{
+				plot.tree.recalculate_costs(this.way)
 			}
-		}else{
-			plot.tree.recalculate_costs(this.way)
 		}
 	},
 	start : function(position){
+		this.continue = true
 		
 		if(position !== undefined )
 			this.init_from_position(position)
 
 		this.next_position()
+	},
+	stop : function(){
+		this.continue = false
 	},
 	init_from_position : function(position){
 		this.x = position.x
