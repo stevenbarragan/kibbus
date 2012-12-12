@@ -22,7 +22,7 @@ $(document).ready(function(){
 
 	$( "#slider-vertical-velocity" ).slider({
 		range: "min",
-		max: 500,
+		max: 5,
 		min: 0.5,
 		value: 1,
 		step: 0.5,
@@ -39,9 +39,15 @@ $(document).ready(function(){
 
 	$("#set_kibbus").click(function(){ plot.set_kibbus()})
 
-	$("#go_home").click(function(){ kibbus.start() })
+	$("#training").click(function(){
+		velocity = 100
+		kibbus.start()
+	})
 
-	$("#stop").click(function(){ kibbus.stop() })
+	$("#stop").click(function(){
+		velocity = $( "#slider-vertical-velocity" ).slider("value")
+		kibbus.stop()
+	})
 	
 	$("#test").click(function(){
 		// var worker = new Worker('/js/stepfourth/task.js');

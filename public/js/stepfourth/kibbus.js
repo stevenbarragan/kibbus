@@ -20,6 +20,7 @@ var kibbus = {
 		this.coordenates = []
 		this.last_position = {x:kibbus.x,y:kibbus.y}
 		this.way = []
+		this.finding = false
 	},
 	spin: function(position){
 		this.cow.animate({
@@ -61,7 +62,10 @@ var kibbus = {
 
 			self.way.push(pos)
 
-			self.next_position()
+			if(self.finding)
+				self.next_position()
+			else
+				self.move()
 		})
 	
 	},
@@ -81,13 +85,13 @@ var kibbus = {
 	},
 	next_position: function(){
 
-		if(this.continue){
+		if(this.finding && this.continue){
 
 			var position = {x:this.x,y:this.y}
 
 			if( !plot.on_house(position)){
 
-				positions = utils.posibles_movents(position, this.way)
+				positions = utils.posibles_movents(position, this.way, this.last_position)
 
 				if(positions.length > 0 ){
 
@@ -104,30 +108,48 @@ var kibbus = {
 			}else{
 				plot.tree.recalculate_costs(this.way)
 			}
+		}else{
+			this.move()
 		}
 	},
 	start : function(position){
 		this.continue = true
+		this.finding = true
 		
 		if(position !== undefined )
 			this.init_from_position(position)
-
-		this.next_position()
+                
+        this.next_position()
 	},
 	stop : function(){
 		this.continue = false
+		this.finding = false
+
+		this.cow.stop()
+		
+		plot.tree.find_way_start(raiz_position)
 	},
-	init_from_position : function(position){
+	init_from_position : function(position, coordenates){
+
 		this.x = position.x
 		this.y = position.y
 
-		this.coordenates = []
+		this.coordenates = coordenates !== undefined ? coordenates : []
 		this.last_position = position
 		this.way = []
 
 		this.cow.attr({
-			x:position.x * 50,
-			y:position.y * 50
+			opacity : 0
 		})
+
+		this.cow.animate({
+			x:position.x * 50,
+			y:position.y * 50,
+			opacity : 1
+		}, 0 )
+
+	},
+	go_home : function(){
+		plot.tree.find_way_start({x:this.x,y:this.y})
 	}
 }

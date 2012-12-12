@@ -23,17 +23,14 @@ var thread = {
         var stack = []
         stack.push({ list:list , node:node })
 
-        var iterations = 0
-
         while(stack.length != 0 ){
-            iterations++
             element = stack.pop()
 
             element.list.push(element.node.position)
 
-            if( this.same_positions(house_position , element.node.position )){
-                return {list:element.list,iterations:iterations}
-            }
+            if( this.same_positions(house_position , element.node.position ))
+                return element.list
+            
 
             var child = this.sort_ways(element.node.ways)
 
@@ -79,7 +76,6 @@ var thread = {
                 return true
 
         return false
-
     }
 }
 

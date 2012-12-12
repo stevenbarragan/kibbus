@@ -51,17 +51,22 @@ utils = {
 		})
 		return sum
 	},
-	posibles_movents : function(pos, visited_list){
+	posibles_movents : function(pos, visited_list, last_position){
 		pos_list = []
 		
 		for(x=pos.x-1; x<= pos.x + 1 ; x++)
 			for(y=pos.y-1;y<=pos.y + 1 ; y++){
 				pos2 = { x:x, y:y }
-				if( plot.valid_position(pos2) && this.diferent_position(pos2, pos) && !plot.is_obstacle(pos2) && !this.position_on_list(pos2, visited_list))
+				if( plot.valid_position(pos2) && this.diferent_position(pos2, pos) && this.diferent_position(pos2, last_position) && !plot.is_obstacle(pos2) && !this.position_on_list(pos2, visited_list))
 					pos_list.push(pos2)
 			}
 
-		if(pos_list.length == 0 ) return this.visited_to_positions(visited_list, pos)
+		if(pos_list.length == 0 ){
+			 pos_list = this.visited_to_positions(visited_list, pos, last_position)
+
+			 if(pos_list.length == 0 )
+			 	return [last_position]
+		}
 
 		return pos_list
 	},
@@ -98,13 +103,13 @@ utils = {
 		return lista
 
 	},
-	visited_to_positions: function(visited_list, pos){
+	visited_to_positions: function(visited_list, pos, last_position){
 		positions = []
 
 		for(x=pos.x-1; x<= pos.x + 1 ; x++){
 			for(y=pos.y-1;y<=pos.y + 1 ; y++){
 				pos2 = { x:x, y:y }
-				if( this.position_on_list(pos2 , visited_list ) && (x != pos.x || y != pos.y ))
+				if( this.position_on_list(pos2 , visited_list ) && this.diferent_position(pos2 , last_position) && (x != pos.x || y != pos.y ))
 					positions.push(pos2)
 			}
 		}
