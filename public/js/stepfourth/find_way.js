@@ -1,27 +1,11 @@
 var thread = {
-    find_way : function(list , house_position , nodo){
-        list.push(nodo.position)
-
-        if( this.same_positions(house_position , nodo.position )){
-            this.ways = list
-            return true
-        }
-
-        child = this.sort_ways(nodo.ways)
-
-        for (var i = child.length - 1; i >= 0; i--) {
-            if( !this.in_list( list , child[i].node ) ){
-                if(this.find_way(list , house_position ,child[i].node ))
-                    return true
-            }
-        }
-
-        return false
-
-    },
-    find_way2 : function(list , house_position , node){
+    find_way : function(list , house_position , node){
         var stack = []
-        stack.push({ list:list , node:node })
+        
+        stack.push({
+            list:list.slice(), 
+            node:node
+        })
 
         while(stack.length != 0 ){
             element = stack.pop()
@@ -30,7 +14,7 @@ var thread = {
 
             if( this.same_positions(house_position , element.node.position ))
                 return element.list
-            
+                    
 
             var child = this.sort_ways(element.node.ways)
 
@@ -38,7 +22,10 @@ var thread = {
 
             for (var i = child.length - 1; i >= 0; i--) {
                 if( !this.in_list( element.list , child[i].node.position )){
-                    stack.push({ list:element.list, node:child[i].node })
+                    stack.push({
+                        list:element.list.slice() , 
+                        node:child[i].node
+                    })
                 }
             }
 
@@ -81,8 +68,5 @@ var thread = {
 
 self.addEventListener('message', function(e) {
     var data = e.data
-
-    self.postMessage( thread.find_way2( [] , data.house_position , data.node ) )
-
-
+    self.postMessage( thread.find_way( [] , data.house_position , data.node ) )
 }, false);

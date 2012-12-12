@@ -13,12 +13,13 @@ var plot = {
 		forest.init()
 		this.flag_opacity = 1
 
-		this.worker = new Worker('/js/stepfourth/task.js');
+		this.find_worker = new Worker('/js/stepfourth/find_way.js');
 
-		this.worker.addEventListener('message', this.move_on_path , false);
+		this.find_worker.addEventListener('message', this.move_on_path , false);
 	},
 	move_on_path : function(e) {
 		kibbus.init_from_position( e.data.splice(0 , 1)[0] , e.data )
+		kibbus.move()
 	},
 	set_size : function(){
 		
@@ -161,7 +162,6 @@ var plot = {
 	tree : {
 		init : function(position){
 			this.nodes = []
-			// this.raiz = this.find_create_node(position)
 			this.raiz = new node( position.x, position.y)
 
 			raiz_position = this.raiz.position
@@ -247,72 +247,16 @@ var plot = {
 			var house_position = {x:plot.house.attr("x") / 50,y:plot.house.attr("y") / 50}
 			var node = this.find_create_node(element)
 
-			// plot.worker.postMessage({
-			// 	house_position : house_position,
-			// 	node : node
-			// })
-
-			var coordenates = this.find_way2( [] , house_position , node )
-
-			kibbus.init_from_position( coordenates.splice(0 , 1)[0] , coordenates )
-			kibbus.move()
-		},
-		find_way2 : function(list , house_position , node){
-		    var stack = []
-		    stack.push({ list:list.slice() , node:node })
-
-		    while(stack.length != 0 ){
-		        element = stack.pop()
-
-		        element.list.push(element.node.position)
-
-		        if( this.same_positions(house_position , element.node.position ))
-		            return element.list
-		        
-
-		        var child = this.sort_ways(element.node.ways)
-
-		        child.reverse()
-
-		        for (var i = child.length - 1; i >= 0; i--) {
-		            if( !this.in_list( element.list , child[i].node.position )){
-		                stack.push({ list:element.list.slice() , node:child[i].node })
-		            }
-		        }
-
-		    }
+			plot.find_worker.postMessage({
+				house_position : house_position,
+				node : node
+			})
 
 		},
-	    sort_ways : function(costs){
-	        var ways = costs.slice(0)
-	        list = []
-
-	        total = ways.length
-
-	        while(list.length != total){
-	            candidate = 0
-
-	            mayor = ways[candidate]
-
-	            for (var i = candidate + 1; i < ways.length; i++) {
-	                if(ways[i].value > ways[candidate].value )
-	                    candidate = i
-	            }
-
-	            list.push(ways[candidate])
-	            ways.splice(candidate , 1)
-	        }
-
-	        return list
-	    },
-	    same_positions : function(pos1 , pos2){
-	        return pos1.x == pos2.x && pos1.y == pos2.y
-	    },
 	    in_list : function(list , element ){
 	        for (var i = list.length - 1; i >= 0; i--)
 	            if(list[i].x == element.x && list[i].y == element.y)
 	                return true
-
 	        return false
 	    }
 	}
