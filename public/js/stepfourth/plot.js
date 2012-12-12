@@ -17,10 +17,10 @@ var plot = {
 		this.training_times = 0
 		this.training_times_limit = 100
 
-		this.find_worker = new Worker('/js/stepfourth/find_way.js');
+		this.find_worker = new Worker('js/stepfourth/find_way.js');
 		this.find_worker.addEventListener('message', this.move_on_path , false);
 
-		this.training_worker = new Worker("/js/stepfourth/training.js")
+		this.training_worker = new Worker("js/stepfourth/training.js")
 		this.training_worker.addEventListener("message" , this.save_training , false)
 	},
 	move_on_path : function(e) {

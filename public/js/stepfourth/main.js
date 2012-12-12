@@ -63,19 +63,6 @@ $(document).ready(function(){
 		velocity = $( "#slider-vertical-velocity" ).slider("value")
 		kibbus.stop()
 	})
-	
-	$("#test").click(function(){
-		// var worker = new Worker('/js/stepfourth/task.js');
-		// worker.postMessage();
-
-		// worker.addEventListener('message', function(e) {
-		//   console.log('Worker said: ', e.data);
-		// }, false);
-
-		// plot.worker.postMessage({uno:"unoasdfasdf"}); // Send data to our worker.
-
-		plot.tree.find_way_start(raiz_position)
-	})
 
 	$("#add-remove").click(function(){
 		forest.add_remove()
