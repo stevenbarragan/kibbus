@@ -41,7 +41,22 @@ $(document).ready(function(){
 
 	$("#training").click(function(){
 		velocity = 100
-		kibbus.start()
+
+		$( "#slider-vertical" ).slider("disable")
+		$( "#add-remove" ).hide()
+		$( "#house" ).hide()
+
+		plot.training_times_limit = parseInt( $("#training_times").val() )
+		plot.training_times = 0
+
+		plot.training_worker.postMessage({
+			raiz:plot.tree.raiz,
+			house_position : {x:plot.house.attr("x") / 50,y:plot.house.attr("y") / 50 },
+			plot : {width:plot.width,height: plot.height },
+			obstacles : forest.obstacles
+		})
+		
+		kibbus.start({x:plot.tree.raiz.position.x,y:plot.tree.raiz.position.y})
 	})
 
 	$("#stop").click(function(){

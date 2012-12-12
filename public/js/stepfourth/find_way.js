@@ -23,7 +23,7 @@ var thread = {
             for (var i = child.length - 1; i >= 0; i--) {
                 if( !this.in_list( element.list , child[i].node.position )){
                     stack.push({
-                        list:element.list.slice() , 
+                        list:element.list.slice(), 
                         node:child[i].node
                     })
                 }

@@ -106,7 +106,16 @@ var kibbus = {
 					this.move()
 				}
 			}else{
-				plot.tree.recalculate_costs(this.way)
+				var self = this
+				var settimeout = setInterval(function(){
+					if(!plot.recalculating){
+						clearInterval(settimeout)
+						plot.tree.recalculate_costs(self.way)
+
+						if(plot.training_times < plot.training_times_limit)
+							kibbus.start({x:plot.tree.raiz.position.x,y:plot.tree.raiz.position.y})
+					}
+				} , 10)
 			}
 		}else{
 			this.move()

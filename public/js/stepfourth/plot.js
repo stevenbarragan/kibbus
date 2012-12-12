@@ -13,13 +13,35 @@ var plot = {
 		forest.init()
 		this.flag_opacity = 1
 
-		this.find_worker = new Worker('/js/stepfourth/find_way.js');
+		this.recalculating = false
+		this.training_times = 0
+		this.training_times_limit = 100
 
+		this.find_worker = new Worker('/js/stepfourth/find_way.js');
 		this.find_worker.addEventListener('message', this.move_on_path , false);
+
+		this.training_worker = new Worker("/js/stepfourth/training.js")
+		this.training_worker.addEventListener("message" , this.save_training , false)
 	},
 	move_on_path : function(e) {
 		kibbus.init_from_position( e.data.splice(0 , 1)[0] , e.data )
 		kibbus.move()
+	},
+	save_training : function(e){
+		var settimeout = setInterval(function(){
+			if(!plot.recalculating){
+				clearInterval(settimeout)
+				plot.tree.recalculate_costs(e.data)
+
+				if(plot.training_times < plot.training_times_limit)
+					plot.training_worker.postMessage({
+						raiz:plot.tree.raiz,
+						house_position : {x:plot.house.attr("x") / 50,y:plot.house.attr("y") / 50 },
+						plot : {width:plot.width,height: plot.height },
+						obstacles : forest.obstacles
+					})
+			}
+		} , 10)
 	},
 	set_size : function(){
 		
@@ -168,6 +190,11 @@ var plot = {
 
 		},
 		recalculate_costs : function(positions){
+			plot.recalculating = true
+			plot.training_times++
+
+			$("#training_times").val(plot.training_times_limit - plot.training_times )
+
 			this.positions = positions
 
 			var node = this.raiz
@@ -183,8 +210,6 @@ var plot = {
 			if(positions.length < media)
 				cost_value = -cost_value
 
-			console.log(this.raiz.position)
-
 			while(this.positions.length > 0){
 				position = this.positions.shift()
 
@@ -198,11 +223,11 @@ var plot = {
 			else if(position.length < this.min )
 				this.min = position.length
 
-			kibbus.start({x:this.raiz.position.x,y:this.raiz.position.y})
+			plot.recalculating = false
 
 		},
 		get_position_way: function(costs, position){
-			
+
 			for (var i = costs.length - 1; i >= 0; i--)
 				if( costs[i].node.position.x == position.x && costs[i].node.position.y == position.y )
 					return costs[i]

@@ -71,9 +71,9 @@ utils = {
 		return pos_list
 	},
 	position_on_list : function(position, list){
-		var found = $.grep(list , function(item , i ){ return position.x == item.x && position.y == item.y })
-		if(found.length>0)
-			return true
+		for (var i = list.length - 1; i >= 0; i--) 
+			if( position.x == list[i].x && position.y == list[i].y )
+				return true
 		return false
 	},
 	diferent_position : function(position1, position2){
