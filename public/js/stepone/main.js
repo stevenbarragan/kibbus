@@ -40,6 +40,10 @@ $(document).ready(function(){
         content : "This is the first step to make Kibbus intelligent, today he only have \"memory\", a so basic intelligent way, but it let him come back home.<br />Step by step Kibbus is going to be getting smarter and smarter, he will have another ways of intelligent.<br />Please let me know if you find some bugs :D",
         placement : "bottom"
     })
+
+    if("WebkitTransform" in document.documentElement.style ){
+        $("#explorer_message").hide()
+    }
 })
 
 $(document).keydown(function(key){

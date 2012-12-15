@@ -14,13 +14,13 @@
 		<link rel="stylesheet" href="css/main.css">
 		<link rel="stylesheet" href="css/jquery-ui.css">
 		<!--[if lt IE 9]>
-			<script src="js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
+				<script src="js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
 		<![endif]-->
 	</head>
 	<body>
 		<div class="cacheload"><object data="img/bee2.svg" type="image/svg+xml"></object><object data="img/house.svg" type="image/svg+xml"></object><object data="img/blue-cow.svg" type="image/svg+xml"></object><object data="img/green-cow.svg" type="image/svg+xml"></object><object data="img/cow.svg" type="image/svg+xml"></object><object data="img/forest/leemon.svg" type="image/svg+xml"></object><object data="img/forest/fire.svg" type="image/svg+xml"></object><object data="img/forest/flor.svg" type="image/svg+xml"></object><object data="img/forest/flor2.svg" type="image/svg+xml"></object><object data="img/forest/flower.svg" type="image/svg+xml"></object><object data="img/forest/flowers.svg" type="image/svg+xml"></object><object data="img/forest/river2.svg" type="image/svg+xml"></object><object data="img/forest/river3.svg" type="image/svg+xml"></object><object data="img/forest/rock.svg" type="image/svg+xml"></object><object data="img/forest/tree.png" type="image"></object><object data="img/forest/tree.svg" type="image/svg+xml"></object><object data="img/forest/tree2.svg" type="image/svg+xml"></object><object data="img/forest/tree3.jpg" type="image"></object><object data="img/forest/tree5.svg" type="image/svg+xml"></object><object data="img/forest/tree6.svg" type="image/svg+xml"></object><object data="img/forest/tree7.svg" type="image/svg+xml"></object><object data="img/forest/tree8.svg" type="image/svg+xml"></object><object data="img/forest/tree9.svg" type="image/svg+xml"></object><object data="img/forest/tree10.svg" type="image/svg+xml"></object><object data="img/forest/tree11.svg" type="image/svg+xml"></object><object data="img/forest/tree12.svg" type="image/svg+xml"></object><object data="img/forest/tree13.svg" type="image/svg+xml"></object></div>
 		<?php
-		switch ($_GET["step"]){
+		switch ($_GET["step"]) {
 			case "one":
 			case "two":
 			case "third":
@@ -29,9 +29,10 @@
 				break;
 			default :
 				$step = "fourth";
-		}?>
+		}
+		?>
 		<!--[if lt IE 7]>
-			<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+				<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
 		<![endif]-->
 		<header class="navbar navbar-inverse navbar-fixed-top" id="header">
 			<div class="navbar-inner">
@@ -51,8 +52,11 @@
 							<option value="one" <?php echo $step == "one" ? 'selected' : '' ?>>Frst step</option>
 							<option value="two" <?php echo $step == "two" ? 'selected' : '' ?>>Second step</option>
 							<option value="third" <?php echo $step == "third" ? 'selected' : '' ?>>Third step</option>
-							<option value="third" <?php echo $step == "fourth" ? 'selected' : '' ?>>Step fourth</option>
+							<option value="fourth" <?php echo $step == "fourth" ? 'selected' : '' ?>>Step fourth</option>
 						</select>
+						<div id="explorer_message" class="nav text-warning">
+							Please use Google Chrome, this app uses HTML5 and this explorer is the best on that.
+						</div>
 					</div><!--/.nav-collapse -->
 				</div>
 			</div>
@@ -60,7 +64,7 @@
 		<div id="container">
 			<div id="plot"></div>
 			<div id="controls">
-				<?php include 'controlers/' . $step . '.html'; ?>
+<?php include 'controlers/' . $step . '.html'; ?>
 			</div>
 		</div>
 		<footer>

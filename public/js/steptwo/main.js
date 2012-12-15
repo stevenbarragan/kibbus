@@ -47,6 +47,10 @@ $(document).ready(function(){
 		// $(this).button('toggle')
 		forest.add_remove()
 	})
+
+	if("WebkitTransform" in document.documentElement.style ){
+		$("#explorer_message").hide()
+	}
 	
 	$("#instruction").popover({
 		title : "What to do?",

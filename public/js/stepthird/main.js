@@ -51,6 +51,10 @@ $(document).ready(function(){
 		$(kibbus.friends[0].img.node).data().move( {x:3 , y:3} , 500 )
 	})
 
+	if("WebkitTransform" in document.documentElement.style ){
+		$("#explorer_message").hide()
+	}
+
 
 	
 	$("#instruction").popover({
