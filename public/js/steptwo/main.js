@@ -39,7 +39,7 @@ $(document).ready(function(){
 
 	$("#set_kibbus").click(function(){ plot.set_kibbus()})
 
-	$("#go_home").click(function(){ kibbus.start()})
+	$("#go_home").click(function(){ kibbus.search_home()})
 
 	$("#show_flags").click(function(){plot.show_flags()})
 
