@@ -65,7 +65,7 @@ $(document).ready(function(){
 	
 	$("#why").popover({
 		title : "My AI school project",
-		content : "This is the second step to make Kibbus intelligent, now Kibbus knows his house's position, she has to look for a way through the forest, Kibbus always draws a straight line, between her and the house, to follow and when she came across an obstacle, she moves to another place and she tries to follow a new straight line to get home.<br />She has a system of flags to know the places where she already has been. If the flag is red is considered as a bad place to go and Kibbus are not gonna be there again.<br />Please, if you find any bug let me know :D",
+		content : "On this step kibbus has some friends that help her to get home.<br /><br />The house is the hotter place on the forest and the bees follow the warm, they go on random positions and get the hotter place, go to this place and repeat the process, after 5 cicles they come back for kibbus showing her the hotter way to get home. and they repeat it until all they get home.",
 		placement : "bottom"
 	})
 })

@@ -70,13 +70,13 @@ $(document).ready(function(){
 	
 	$("#instruction").popover({
 		title : "What to do?",
-		content : "<b>First:</b> Click on \"Set house button\", then click on the forest where you want the house.<br /><b>Second:</b> Click where you want to Kibbus start to look for the house.<br /><b>Third:</b> Click on \"Go home\" and watch how kibbus do his maximum effort to get home.",
+		content : "<b>First:</b> Click on \"Set house button\", then click on the forest where you want the house.<br /><b>Second:</b> Click where you want to Kibbus start to look for the house.<br /><b>Third:</b> Click on \"Train\", it will train kibbus to make a mental map of the forest and all the obstacles.<br /><b>Fourth:</b> Click on \"Stop/Go home\" to stop the train and watch how kibbus get home througn the obstacles.<br />After the training Click on \"Set Kibbus\" again and put it on the place you want, it would be able to get home not matter if it's no where it started the training, try any forest's place",
 		placement : "bottom"
 	})
 	
 	$("#why").popover({
-		title : "My AI school project",
-		content : "This is the second step to make Kibbus intelligent, now Kibbus knows his house's position, she has to look for a way through the forest, Kibbus always draws a straight line, between her and the house, to follow and when she came across an obstacle, she moves to another place and she tries to follow a new straight line to get home.<br />She has a system of flags to know the places where she already has been. If the flag is red is considered as a bad place to go and Kibbus are not gonna be there again.<br />Please, if you find any bug let me know :D",
+		title : "My AI project",
+		content : "On fourth step kibbus doesn't have any fried's help to get home and she doesn't know the house's position, but now she gets a \"map\" making it runing around the forest untils she come acrooss with the house.<br />She continue doing several times and after that she is able to get home, using the best way and not matter of with place on the forest she can get home alone ",
 		placement : "bottom"
 	})
 
